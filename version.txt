@@ -1,0 +1,4 @@
+Qr Code Balance (Test): 1.0.20
+python: 3.6
+Description: First version
+Date: 21/01/2020
