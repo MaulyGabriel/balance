@@ -1,5 +1,6 @@
 from digi.xbee.devices import XBeeDevice
 from loguru import logger
+from time import sleep
 
 
 class Communication:
@@ -37,18 +38,19 @@ class Communication:
 
                     if self.verify_digit(message):
 
-                        if message[:] == self.status_camera:
+                        if actions[0]:
                             actions[0] = 0
                             logger.debug('Send status')
                             # self.send_message(connection=connection, message='CAMERA_OK')
-                        elif message[:] == self.status_truck:
-                            actions[0] = 1
+                        elif actions[0] == 1:
+
                             truck = plot.recv()
                             logger.debug(truck)
                             # self.send_message(connection=connection, message=truck)
                             # actions[0] = 0
                         elif message[:] == self.status_package:
                             actions[0] = 2
+                            sleep(0.5)
                             package = plot.recv()
                             logger.debug(package)
                             # self.send_message(connection=connection, message=package)

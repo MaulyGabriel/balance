@@ -18,7 +18,7 @@ class App:
 
         self.r = Recognition(
             station_id=self.station_id,
-            camera=0,
+            camera=1,
             image_size=480,
             show_image=True,
             limit=self.total_cart,
