@@ -18,7 +18,7 @@ class Communication:
 
         return device
 
-    def read_protocol(self, actions, plot):
+    def read_protocol(self, actions, plot_truck, plot_carts):
 
         connection = self.data_call()
 
@@ -38,23 +38,13 @@ class Communication:
 
                     if self.verify_digit(message):
 
-                        if actions[0]:
-                            actions[0] = 0
-                            logger.debug('Send status')
-                            # self.send_message(connection=connection, message='CAMERA_OK')
-                        elif actions[0] == 1:
-
-                            truck = plot.recv()
-                            logger.debug(truck)
-                            # self.send_message(connection=connection, message=truck)
-                            # actions[0] = 0
+                        if message[:] == self.status_truck:
+                            truck = plot_truck.recv()
+                            self.send_message(connection=connection, message=truck)
+                            actions[0] = 1
                         elif message[:] == self.status_package:
-                            actions[0] = 2
-                            sleep(0.5)
-                            package = plot.recv()
-                            logger.debug(package)
-                            # self.send_message(connection=connection, message=package)
-                            # actions[0] = 0
+                            package = plot_carts.recv()
+                            self.send_message(connection=connection, message=package)
                         else:
                             pass
 
@@ -70,6 +60,7 @@ class Communication:
 
             if self.verify_digit(information=message):
                 connection.send_data_broadcast(message.encode('utf-8'))
+                logger.debug('Send: {} '.format(message))
             else:
                 logger.error('Message error')
 

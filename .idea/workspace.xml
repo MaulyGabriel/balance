@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,13 +32,36 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app.py" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="DevDurga" type="PythonConfigurationType" factoryName="Python">
+      <module name="balance" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/dev/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -67,18 +89,56 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl" timestamp="1580208382004">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581358109999">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3840.1040@0.0.3840.1040" timestamp="1581358109999" />
+    <state x="524" y="277" width="424" height="479" key="FileChooserDialogImpl" timestamp="1581358103573">
+      <screen x="0" y="0" width="3840" height="1040" />
     </state>
     <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1580208382004" />
+    <state x="524" y="277" key="FileChooserDialogImpl/0.0.3840.1040@0.0.3840.1040" timestamp="1581358103573" />
+    <state width="1920" height="1027" key="GridCell.Tab.0.bottom" timestamp="1581368471523">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.0.bottom/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471523" />
+    <state width="1920" height="1027" key="GridCell.Tab.0.center" timestamp="1581368471522">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.0.center/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471522" />
+    <state width="1920" height="1027" key="GridCell.Tab.0.left" timestamp="1581368471521">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.0.left/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471521" />
+    <state width="1920" height="1027" key="GridCell.Tab.0.right" timestamp="1581368471522">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.0.right/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471522" />
+    <state width="1920" height="1027" key="GridCell.Tab.1.bottom" timestamp="1581368471527">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.1.bottom/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471527" />
+    <state width="1920" height="1027" key="GridCell.Tab.1.center" timestamp="1581368471525">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.1.center/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471525" />
+    <state width="1920" height="1027" key="GridCell.Tab.1.left" timestamp="1581368471524">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.1.left/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471524" />
+    <state width="1920" height="1027" key="GridCell.Tab.1.right" timestamp="1581368471526">
+      <screen x="0" y="0" width="3840" height="1040" />
+    </state>
+    <state width="1920" height="1027" key="GridCell.Tab.1.right/0.0.3840.1040@0.0.3840.1040" timestamp="1581368471526" />
     <state x="122" y="54" key="SettingsEditor" timestamp="1580208384696">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="122" y="54" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1580208384696" />
-    <state x="105" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1581332321133">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2025" y="360" key="com.intellij.ide.util.TipDialog" timestamp="1581417505766">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581332321133" />
+    <state x="2025" y="360" key="com.intellij.ide.util.TipDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1581417505766" />
     <state x="981" y="0" width="939" height="1000" key="dock-window-1" timestamp="1580415842113">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -97,57 +157,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>87</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>47</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>46</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>53</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>71</line>
-          <option name="timeStamp" value="19" />
+          <line>126</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>145</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>111</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>130</line>
-          <option name="timeStamp" value="26" />
+          <line>85</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

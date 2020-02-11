@@ -9,16 +9,17 @@ class App:
     def __init__(self):
         self.station_id = 1
         self.total_cart = 2
-        self.receive, self.send = mp.Pipe()
+        self.receive_truck, self.send_truck = mp.Pipe()
+        self.receive_carts, self.send_carts = mp.Pipe()
 
-        # [0]-Status camera  [1]-Send truck  [2]-Send package
+        # [0]-Send truck  [1]-Send package
         self.actions = mp.Array('i', [0])
 
         self.c = Communication(port='/dev/ttyUSB0', rate=115200)
 
         self.r = Recognition(
             station_id=self.station_id,
-            camera=1,
+            camera=0,
             image_size=480,
             show_image=True,
             limit=self.total_cart,
@@ -29,10 +30,10 @@ class App:
         self.carts = mp.Array('i', self.r.create_list(self.total_cart))
 
     def recognition_service(self):
-        self.r.reader(carts=self.carts, actions=self.actions, plot=self.send)
+        self.r.reader(carts=self.carts, actions=self.actions, plot_truck=self.send_truck, plot_carts=self.send_carts)
 
     def communication_service(self):
-        self.c.read_protocol(actions=self.actions, plot=self.receive)
+        self.c.read_protocol(actions=self.actions, plot_truck=self.receive_truck, plot_carts=self.receive_carts)
 
 
 if __name__ == '__main__':
