@@ -8,13 +8,10 @@ def send_message(port, rate):
 
         device.open()
 
-        while True:
-            message = input('Type the command '
-                            '\n[1] - STATUS_CAMERA'
-                            '\n[2] - SEND_TRUCK'
-                            '\n[3] - SEND_PACKAGE\n: '
-                            )
+        print("Type the command  \n [1] - STATUS_CAMERA \n [2] - SEND_TRUCK \n [3] - SEND_PACKAGE \n:")
 
+        while True:
+            message = input('Type the command:')
             message = int(message)
 
             if message == 1:

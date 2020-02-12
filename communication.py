@@ -1,6 +1,7 @@
 from digi.xbee.devices import XBeeDevice
 from loguru import logger
 from time import sleep
+import serial
 
 
 class Communication:
@@ -12,7 +13,17 @@ class Communication:
         self.status_truck = 'SEND_TRUCK,*34\r\n'
         self.status_package = 'SEND_PACKAGE,*35\r\n'
 
+    def set_mode(self):
+
+        conn = serial.Serial(self.port, baudrate=self.rate, timeout=1)
+
+        conn.write('+++'.encode())
+
+        conn.close()
+
     def data_call(self):
+
+        self.set_mode()
 
         device = XBeeDevice(self.port, self.rate)
 
@@ -41,7 +52,6 @@ class Communication:
                         if message[:] == self.status_truck:
                             truck = plot_truck.recv()
                             self.send_message(connection=connection, message=truck)
-                            actions[0] = 1
                         elif message[:] == self.status_package:
                             package = plot_carts.recv()
                             self.send_message(connection=connection, message=package)

@@ -77,6 +77,8 @@ class Recognition:
 
         truck = ''
 
+        format_package = ''
+
         while True:
 
             frame = camera.read()
@@ -87,16 +89,15 @@ class Recognition:
 
             if code != '':
 
-                if actions[0] == 0:
+                cart = code.split('-')
 
-                    cart = code.split('-')
+                if actions[0] == 0:
 
                     # our code?
                     if cart[0] != self.pattern_code:
 
                         # code is truck ?
                         if cart[0] == 'CAM':
-                            logger.debug('Truck: OK')
                             truck = cart[1]
 
                         # add code in package case not exist
@@ -115,6 +116,7 @@ class Recognition:
                         total_identify = self.limit - carts[:].count(0)
 
                         if total_identify == self.limit:
+
                             format_package = '{},{},{},{},{}'.format(
                                 self.package_ok,
                                 self.station_id,
@@ -125,23 +127,28 @@ class Recognition:
 
                             logger.info('Send trucks')
                             plot_truck.send(format_package)
+                            actions[0] = 1
 
-                elif actions[0] == 1:
+                elif cart[0] == self.pattern_code:
 
-                    final_message = ''
+                    if actions[0] == 1:
+                        final_message = ''
 
-                    for c in carts[:]:
+                        for c in carts[:]:
 
-                        if c != 0:
-                            final_message += '\n{},{}'.format(self.package_send, c)
-                        else:
-                            pass
+                            if c != 0:
+                                final_message += '\n{},{}'.format(self.package_send, c)
+                            else:
+                                pass
 
-                    logger.info('Send carts')
-                    plot_carts.send(final_message)
+                        logger.info('Send carts')
+                        plot_carts.send(final_message)
 
-                    logger.info('Clear package')
-                    carts[:] = self.create_list(size=self.limit)
+                        logger.info('Clear package')
+                        carts[:] = self.create_list(size=self.limit)
+                        actions[0] = 0
+                    else:
+                        pass
 
             if self.show_image is True:
                 cv2.imshow('Image', frame)
@@ -149,7 +156,7 @@ class Recognition:
                     break
 
             else:
-                # camera on
+                # camera on, send status
                 pass
 
     cv2.destroyAllWindows()

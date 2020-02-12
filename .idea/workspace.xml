@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5d39c52f-1da7-4b73-8f3b-f96d07f89599" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,10 +134,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="122" y="54" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1580208384696" />
-    <state x="2025" y="360" key="com.intellij.ide.util.TipDialog" timestamp="1581417505766">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="105" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1581504982451">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581332321133" />
+    <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581504982451" />
     <state x="2025" y="360" key="com.intellij.ide.util.TipDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1581417505766" />
     <state x="981" y="0" width="939" height="1000" key="dock-window-1" timestamp="1580415842113">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -157,13 +157,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>126</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>85</line>
-          <option name="timeStamp" value="45" />
+          <line>128</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
