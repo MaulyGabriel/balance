@@ -77,7 +77,7 @@ class Recognition:
 
         truck = ''
 
-        format_package = ''
+        aux_cart = list()
 
         while True:
 
@@ -100,55 +100,64 @@ class Recognition:
                         if cart[0] == 'CAM':
                             truck = cart[1]
 
-                        # add code in package case not exist
-                        try:
-                            if int(cart[0]) in carts[:]:
+                        if truck == '':
+                            pass
+                        else:
+
+                            # add code in package case not exist
+                            try:
+                                if int(cart[0]) in carts[:]:
+                                    pass
+                                else:
+                                    logger.info('Add cart in package')
+                                    carts[0:self.limit - 1] = carts[1:self.limit]
+                                    carts[self.limit - 1] = int(cart[0])
+                            except ValueError:
                                 pass
-                            else:
-                                logger.info('Add cart in package')
-                                carts[0:self.limit - 1] = carts[1:self.limit]
-                                carts[self.limit - 1] = int(cart[0])
-                        except ValueError:
-                            pass
-                        except IndexError:
-                            pass
-
-                        total_identify = self.limit - carts[:].count(0)
-
-                        if total_identify == self.limit:
-
-                            format_package = '{},{},{},{},{}'.format(
-                                self.package_ok,
-                                self.station_id,
-                                truck,
-                                total_identify,
-                                self.get_format_date()
-                            )
-
-                            logger.info('Send trucks')
-                            plot_truck.send(format_package)
-                            actions[0] = 1
-
-                elif cart[0] == self.pattern_code:
-
-                    if actions[0] == 1:
-                        final_message = ''
-
-                        for c in carts[:]:
-
-                            if c != 0:
-                                final_message += '\n{},{}'.format(self.package_send, c)
-                            else:
+                            except IndexError:
                                 pass
 
-                        logger.info('Send carts')
-                        plot_carts.send(final_message)
+                            total_identify = self.limit - carts[:].count(0)
 
-                        logger.info('Clear package')
-                        carts[:] = self.create_list(size=self.limit)
-                        actions[0] = 0
+                            if total_identify == self.limit:
+
+                                format_package = '{},{},{},{},{}'.format(
+                                    self.package_ok,
+                                    self.station_id,
+                                    truck,
+                                    total_identify,
+                                    self.get_format_date()
+                                )
+
+                                truck = ''
+
+                                logger.info('Send trucks')
+                                plot_truck.send(format_package)
+
+                                aux_cart = carts[:]
+                                carts[:] = self.create_list(size=self.limit)
+                                actions[0] = 1
+
+            if actions[0] == 2:
+
+                final_message = ''
+
+                logger.debug(aux_cart)
+
+                for c in aux_cart:
+
+                    if c != 0:
+                        final_message += '\n{},{}'.format(self.package_send, c)
                     else:
                         pass
+
+                aux_cart = list()
+                logger.info('Send carts')
+                plot_carts.send(final_message)
+                actions[0] = 0
+
+            else:
+                pass
 
             if self.show_image is True:
                 cv2.imshow('Image', frame)

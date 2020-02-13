@@ -9,15 +9,13 @@ class Communication:
     def __init__(self, port, rate):
         self.port = port
         self.rate = rate
-        self.status_camera = 'STATUS_CAMERA,*7E\r\n'
-        self.status_truck = 'SEND_TRUCK,*34\r\n'
         self.status_package = 'SEND_PACKAGE,*35\r\n'
 
     def set_mode(self):
 
         conn = serial.Serial(self.port, baudrate=self.rate, timeout=1)
 
-        conn.write('+++'.encode())
+        conn.write('+++\r\n'.encode())
 
         conn.close()
 
@@ -39,24 +37,33 @@ class Communication:
 
             while True:
 
-                message = connection.read_data()
+                if actions[0] == 0:
 
-                if message is None:
-                    pass
-                else:
+                    message = connection.read_data()
 
-                    message = str(message.data.decode('utf-8'))
+                    if message is None:
+                        pass
+                    else:
 
-                    if self.verify_digit(message):
+                        message = str(message.data.decode('utf-8'))
 
-                        if message[:] == self.status_truck:
-                            truck = plot_truck.recv()
-                            self.send_message(connection=connection, message=truck)
-                        elif message[:] == self.status_package:
-                            package = plot_carts.recv()
-                            self.send_message(connection=connection, message=package)
-                        else:
-                            pass
+                        if self.verify_digit(message):
+
+                            logger.success(message)
+
+                            if message[:] == self.status_package:
+                                actions[0] = 2
+                                package = plot_carts.recv()
+                                self.send_message(connection=connection, message=package)
+                                # actions[0] = 0
+
+                            else:
+                                pass
+
+                elif actions[0] == 1:
+                    truck = plot_truck.recv()
+                    self.send_message(connection=connection, message=truck)
+                    actions[0] = 0
 
         except Exception as e:
             logger.error('Error in connection: {}'.format(e))
