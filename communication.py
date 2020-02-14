@@ -1,6 +1,5 @@
 from digi.xbee.devices import XBeeDevice
 from loguru import logger
-from time import sleep
 import serial
 
 
@@ -55,7 +54,6 @@ class Communication:
                                 actions[0] = 2
                                 package = plot_carts.recv()
                                 self.send_message(connection=connection, message=package)
-                                # actions[0] = 0
 
                             else:
                                 pass

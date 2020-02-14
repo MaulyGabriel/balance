@@ -1,0 +1,7 @@
+ opencv-python
+ imutils
+ pyzbar
+ loguru
+ digi-xbee
+ pyserial
+ numpy

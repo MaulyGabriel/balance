@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d39c52f-1da7-4b73-8f3b-f96d07f89599" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
@@ -134,11 +136,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="122" y="54" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1580208384696" />
-    <state x="75" y="243" key="com.intellij.ide.util.TipDialog" timestamp="1581546496060">
-      <screen x="0" y="0" width="1366" height="728" />
+    <state x="105" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1581629974981">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="75" y="243" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1581546496060" />
-    <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581504982451" />
+    <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581629974981" />
     <state x="2025" y="360" key="com.intellij.ide.util.TipDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1581417505766" />
     <state x="981" y="0" width="939" height="1000" key="dock-window-1" timestamp="1580415842113">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -152,16 +154,5 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="228" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1581594251709" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>140</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

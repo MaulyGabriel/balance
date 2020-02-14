@@ -11,10 +11,7 @@ class App:
         self.total_cart = 2
         self.receive_truck, self.send_truck = mp.Pipe()
         self.receive_carts, self.send_carts = mp.Pipe()
-
-        # [0]-Send truck  [1]-Send package
         self.actions = mp.Array('i', [0])
-
         self.c = Communication(port='/dev/ttyUSB0', rate=115200)
 
         self.r = Recognition(
@@ -24,7 +21,7 @@ class App:
             show_image=True,
             limit=self.total_cart,
             use_rasp=False,
-            pattern_code='x'
+            pattern_code='x'.upper()
         )
 
         self.carts = mp.Array('i', self.r.create_list(self.total_cart))
@@ -40,8 +37,8 @@ if __name__ == '__main__':
 
     logger.info('Start application...')
     app = App()
-    recognition_process = mp.Process(target=app.recognition_service, args=())
     communication_process = mp.Process(target=app.communication_service, args=())
+    recognition_process = mp.Process(target=app.recognition_service, args=())
 
     try:
         communication_process.start()

@@ -94,10 +94,10 @@ class Recognition:
                 if actions[0] == 0:
 
                     # our code?
-                    if cart[0] != self.pattern_code:
+                    if cart[0].upper() != self.pattern_code:
 
                         # code is truck ?
-                        if cart[0] == 'CAM':
+                        if cart[0].upper() == 'CAM'.upper():
                             truck = cart[1]
 
                         if truck == '':
@@ -117,32 +117,35 @@ class Recognition:
                             except IndexError:
                                 pass
 
-                            total_identify = self.limit - carts[:].count(0)
+                    elif code[0].upper() == self.pattern_code:
 
-                            if total_identify == self.limit:
+                        total_identify = self.limit - carts[:].count(0)
 
-                                format_package = '{},{},{},{},{}'.format(
-                                    self.package_ok,
-                                    self.station_id,
-                                    truck,
-                                    total_identify,
-                                    self.get_format_date()
-                                )
+                        if total_identify == 0:
+                            pass
+                        else:
+                            format_package = '{},{},{},{},{}'.format(
+                                self.package_ok,
+                                self.station_id,
+                                truck,
+                                total_identify,
+                                self.get_format_date()
+                            )
 
-                                truck = ''
+                            truck = ''
 
-                                logger.info('Send trucks')
-                                plot_truck.send(format_package)
+                            plot_truck.send(format_package)
 
-                                aux_cart = carts[:]
-                                carts[:] = self.create_list(size=self.limit)
-                                actions[0] = 1
+                            aux_cart = carts[:]
+                            carts[:] = self.create_list(size=self.limit)
+                            actions[0] = 1
+
+                    else:
+                        pass
 
             if actions[0] == 2:
 
                 final_message = ''
-
-                logger.debug(aux_cart)
 
                 for c in aux_cart:
 
@@ -152,7 +155,6 @@ class Recognition:
                         pass
 
                 aux_cart = list()
-                logger.info('Send carts')
                 plot_carts.send(final_message)
                 actions[0] = 0
 
