@@ -103,6 +103,7 @@ class Recognition:
                         if truck == '':
                             pass
                         else:
+                            # case identify truck construct package
 
                             # add code in package case not exist
                             try:

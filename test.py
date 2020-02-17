@@ -1,4 +1,5 @@
 from digi.xbee.devices import XBeeDevice
+from loguru import logger
 
 
 def send_message(port, rate):
@@ -8,12 +9,15 @@ def send_message(port, rate):
 
         device.open()
 
-        print("Type the command  \n [1] - STATUS_CAMERA \n [2] - SEND_TRUCK \n [3] - SEND_PACKAGE \n:")
+        logger.info("Type the command  \n [1] - STATUS_CAMERA \n [2] - SEND_TRUCK \n [3] - SEND_PACKAGE \n:")
 
         while True:
             message = input('Type the command:')
-            message = int(message)
 
+            try:
+                message = int(message)
+            except Exception as e:
+                logger.error(e)
             if message == 1:
                 device.send_data_broadcast('STATUS_CAMERA,*7E\r\n'.encode('utf-8'))
             elif message == 2:
@@ -24,7 +28,7 @@ def send_message(port, rate):
                 pass
 
     except Exception as e:
-        print(e)
+        logger.error(e)
         device.close()
 
     device.close()
