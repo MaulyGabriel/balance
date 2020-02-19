@@ -8,10 +8,11 @@ class App:
 
     def __init__(self):
         self.station_id = 1
-        self.total_cart = 2
+        self.total_cart = 12
         self.receive_truck, self.send_truck = mp.Pipe()
         self.receive_carts, self.send_carts = mp.Pipe()
         self.actions = mp.Array('i', [0])
+        # rasp -> port='/dev/ttyAMA0'
         self.c = Communication(port='/dev/ttyUSB0', rate=115200)
 
         self.r = Recognition(

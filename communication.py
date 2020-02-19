@@ -1,5 +1,6 @@
 from digi.xbee.devices import XBeeDevice
 from loguru import logger
+from time import sleep
 import serial
 
 
@@ -15,6 +16,8 @@ class Communication:
         conn = serial.Serial(self.port, baudrate=self.rate, timeout=1)
 
         conn.write('+++\r\n'.encode())
+
+        sleep(0.8)
 
         conn.close()
 
@@ -66,7 +69,8 @@ class Communication:
         except Exception as e:
             logger.error('Error in connection: {}'.format(e))
 
-        connection.close()
+        finally:
+            connection.close()
 
     def send_message(self, connection, message):
 

@@ -1,3 +1,4 @@
+from communication import Communication
 from imutils.video import VideoStream
 from loguru import logger
 from time import localtime, sleep
@@ -19,6 +20,7 @@ class Recognition:
         self.pattern_code = pattern_code
         self.package_ok = 'QRBE2'
         self.package_send = 'QRBE3'
+        self.c = Communication(port='/dev/ttyAMA0', rate=115200)
 
     @staticmethod
     def create_list(size):
@@ -146,17 +148,17 @@ class Recognition:
 
             if actions[0] == 2:
 
-                final_message = ''
+                final_message = self.package_send
 
                 for c in aux_cart:
 
                     if c != 0:
-                        final_message += '\n{},{}'.format(self.package_send, c)
+                        final_message += ',{}'.format(c)
                     else:
                         pass
 
                 aux_cart = list()
-                plot_carts.send(final_message)
+                plot_carts.send(final_message + ',FIM')
                 actions[0] = 0
 
             else:
