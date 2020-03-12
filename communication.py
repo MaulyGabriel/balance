@@ -1,7 +1,6 @@
-from digi.xbee.devices import XBeeDevice
+from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress
 from loguru import logger
 from time import sleep
-import serial
 
 
 class Communication:
@@ -9,29 +8,22 @@ class Communication:
     def __init__(self, port, rate):
         self.port = port
         self.rate = rate
+        self.wait_ok = 'QROK,*2B\r\n'
         self.status_package = 'SEND_PACKAGE,*35\r\n'
-
-    def set_mode(self):
-
-        conn = serial.Serial(self.port, baudrate=self.rate, timeout=1)
-
-        conn.write('+++\r\n'.encode())
-
-        sleep(0.8)
-
-        conn.close()
+        self.address_balance = ''
+        self.request_address = 'QRBIN,REQUEST,*17\r\n'
 
     def data_call(self):
-
-        self.set_mode()
 
         device = XBeeDevice(self.port, self.rate)
 
         return device
 
-    def read_protocol(self, actions, plot_truck, plot_carts):
+    def read_protocol(self, actions, plot_truck, station):
 
         connection = self.data_call()
+
+        attempts_count = 1
 
         try:
 
@@ -55,22 +47,90 @@ class Communication:
 
                             if message[:] == self.status_package:
                                 actions[0] = 2
-                                package = plot_carts.recv()
-                                self.send_message(connection=connection, message=package)
 
                             else:
                                 pass
 
                 elif actions[0] == 1:
                     truck = plot_truck.recv()
-                    self.send_message(connection=connection, message=truck)
-                    actions[0] = 0
+
+                    # 1 - send have one package
+                    have_package = '{},{},{}'.format('QRBE1', station, connection.get_64bit_addr())
+                    have_package = self.create_digit(have_package)
+                    connection.send_data_broadcast(have_package.encode('utf-8'))
+
+                    sleep(0.2)
+
+                    answer = connection.read_data()
+
+                    if answer is None:
+                        pass
+                    else:
+                        answer = answer.data.decode('utf-8')
+
+                        if answer[:4] == 'QROK':
+
+                            if self.verify_digit(answer):
+
+                                remote_device = RemoteXBeeDevice(
+                                    connection,
+                                    XBee64BitAddress.from_hex_string(answer.split(',')[1])
+                                )
+
+                                while attempts_count != 0:
+
+                                    logger.info('Send package: {}'.format(attempts_count))
+
+                                    final_message = 'QRBE2,{},{}'.format(attempts_count, truck)
+                                    final_message = self.create_digit(final_message)
+
+                                    connection.send_data(remote_device, final_message.encode('utf-8'))
+
+                                    answer = connection.read_data()
+
+                                    if answer is None:
+                                        pass
+                                    else:
+                                        answer = answer.data.decode('utf-8')
+                                        sleep(0.2)
+
+                                        if answer[:4] == 'QROK':
+                                            if self.verify_digit(answer):
+                                                logger.success('receive ok')
+                                                attempts_count = 1
+                                                actions[0] = 0
+                                                break
+
+                                    attempts_count += 1
+
+                    # actions[0] = 0
 
         except Exception as e:
             logger.error('Error in connection: {}'.format(e))
 
         finally:
             connection.close()
+
+    def send_message_device(self, connection, message):
+
+        try:
+            xbee_network = connection.get_network()
+            remote_device = xbee_network.discover_device(self.address_balance)
+
+            if remote_device is None:
+                logger.error('Not find device')
+
+            message = self.create_digit(information=message)
+
+            if self.verify_digit(information=message):
+
+                connection.send_data(remote_device, message.encode('utf-8'))
+                logger.debug('Send: {} '.format(message))
+            else:
+                logger.error('Message error')
+
+        except Exception as e:
+            logger.error(e)
 
     def send_message(self, connection, message):
 

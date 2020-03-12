@@ -1,43 +1,53 @@
-from loguru import logger
-from recognition import Recognition
 from communication import Communication
+from recognition import Recognition
+from config import Config
+from loguru import logger
 import multiprocessing as mp
 
 
 class App:
 
     def __init__(self):
-        self.station_id = 1
         self.total_cart = 12
-        self.receive_truck, self.send_truck = mp.Pipe()
-        self.receive_carts, self.send_carts = mp.Pipe()
-        self.actions = mp.Array('i', [0])
+        self.size_image = 480
+        self.camera = 0
         # rasp -> port='/dev/ttyAMA0'
-        self.c = Communication(port='/dev/ttyUSB0', rate=115200)
-
+        self.port = '/dev/ttyUSB0'
+        self.rate = 115200
+        self.show_image = True
+        self.use_rasp = False
+        self.actions = mp.Array('i', [0])
+        self.pattern_code = 'QRCONF'.upper()
+        self.receive_truck, self.send_truck = mp.Pipe()
+        self.c = Communication(port=self.port, rate=self.rate)
+        self.config = Config(port=self.port, rate=self.rate)
+        self.station = self.config.read_config()
         self.r = Recognition(
-            station_id=self.station_id,
-            camera=1,
-            image_size=480,
-            show_image=True,
+            camera=self.camera,
+            image_size=self.size_image,
+            show_image=self.show_image,
             limit=self.total_cart,
-            use_rasp=False,
-            pattern_code='x'.upper()
+            use_rasp=self.use_rasp,
+            pattern_code=self.pattern_code,
+            communication=self.c
         )
-
         self.carts = mp.Array('i', self.r.create_list(self.total_cart))
 
     def recognition_service(self):
-        self.r.reader(carts=self.carts, actions=self.actions, plot_truck=self.send_truck, plot_carts=self.send_carts)
+        self.r.reader(carts=self.carts, actions=self.actions, plot_truck=self.send_truck)
 
     def communication_service(self):
-        self.c.read_protocol(actions=self.actions, plot_truck=self.receive_truck, plot_carts=self.receive_carts)
+        self.c.read_protocol(actions=self.actions, plot_truck=self.receive_truck, station=self.station)
 
 
 if __name__ == '__main__':
 
     logger.info('Start application...')
     app = App()
+
+    if app.station == '':
+        app.config.set_configuration()
+
     communication_process = mp.Process(target=app.communication_service, args=())
     recognition_process = mp.Process(target=app.recognition_service, args=())
 
@@ -48,7 +58,8 @@ if __name__ == '__main__':
         communication_process.join()
         recognition_process.join()
 
-    except KeyboardInterrupt:
+    except Exception as e:
+        logger.error(e)
         recognition_process.terminate()
         communication_process.terminate()
         logger.info('End application.')

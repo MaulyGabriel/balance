@@ -1,14 +1,18 @@
 from loguru import logger
 
 
-def show_version():
-    version = open('version.txt', 'r')
+class Version:
 
-    for i in version:
-        logger.info('{}'.format(i))
+    def __init__(self):
+        pass
 
-    version.close()
+    @staticmethod
+    def show_version():
+        with open('version.txt', 'r') as file:
+            for content in file:
+                logger.info('{}'.format(content))
 
 
 if __name__ == '__main__':
-    show_version()
+    v = Version()
+    v.show_version()
