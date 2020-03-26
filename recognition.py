@@ -84,109 +84,113 @@ class Recognition:
 
         while True:
 
-            frame = camera.read()
-            frame = imutils.resize(frame, self.image_size)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            try:
 
-            code = self.scanner(frame)
+                frame = camera.read()
+                frame = imutils.resize(frame, self.image_size)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            if code != '':
+                code = self.scanner(frame)
 
-                cart = code.split('-')
+                if code != '':
 
-                if actions[0] == 0:
+                    cart = code.split('-')
 
-                    # our code?
-                    if cart[0].upper() != self.pattern_code:
+                    if actions[0] == 0:
 
-                        # code is truck ?
-                        if cart[0].upper() == 'CAM'.upper():
-                            truck = cart[1]
-                            status_truck = 1
+                        # our code?
+                        if cart[0].upper() != self.pattern_code:
 
-                        if truck == 0:
-                            truck = 0
-                            status_truck = 0
+                            # code is truck ?
+                            if cart[0].upper() == 'CAM'.upper():
+                                truck = cart[1]
+                                status_truck = 1
 
-                        # add code in  package
-                        try:
-                            if int(cart[0]) in carts[:]:
+                            if truck == 0:
+                                truck = 0
+                                status_truck = 0
+
+                            # add code in  package
+                            try:
+                                if int(cart[0]) in carts[:]:
+                                    pass
+                                else:
+                                    logger.info('Add cart in package: {}'.format(cart[0]))
+                                    carts[0:self.limit - 1] = carts[1:self.limit]
+                                    carts[self.limit - 1] = int(cart[0])
+                            except ValueError:
+                                pass
+                            except IndexError:
+                                pass
+
+                        elif cart[0].upper() == self.pattern_code:
+
+                            total_identify = self.limit - carts[:].count(0)
+
+                            if total_identify == 0:
                                 pass
                             else:
-                                logger.info('Add cart in package: {}'.format(cart[0]))
-                                carts[0:self.limit - 1] = carts[1:self.limit]
-                                carts[self.limit - 1] = int(cart[0])
-                        except ValueError:
-                            pass
-                        except IndexError:
-                            pass
+                                codes_carts = ''
 
-                    elif cart[0].upper() == self.pattern_code:
+                                aux_cart = carts[:]
 
-                        total_identify = self.limit - carts[:].count(0)
+                                for c in aux_cart:
 
-                        if total_identify == 0:
-                            pass
+                                    if c != 0:
+                                        codes_carts += ',{}'.format(c)
+                                    else:
+                                        pass
+
+                                format_package = '{},{}{}'.format(
+                                    truck,
+                                    total_identify,
+                                    codes_carts
+                                )
+
+                                self.package_log.append(format_package.split(',')[0])
+                                self.cart_log.append(total_identify)
+                                self.truck_log.append(status_truck)
+                                self.hour_log.append(self.get_format_date())
+
+                                logs = {
+
+                                    'number_truck': self.package_log,
+                                    'total_cart': self.cart_log,
+                                    'cart_recognition': self.truck_log,
+                                    'day': self.hour_log,
+                                }
+
+                                self.package_log = list()
+                                self.cart_log = list()
+                                self.truck_log = list()
+                                self.hour_log = list()
+
+                                df = pd.DataFrame(logs)
+                                with open('logs.csv', 'a') as f:
+                                    df.to_csv(f, index=False, header=False)
+
+                                truck = 0
+                                plot_truck.send(format_package)
+                                carts[:] = self.create_list(size=self.limit)
+                                actions[0] = 1
+
                         else:
-                            codes_carts = ''
-
-                            aux_cart = carts[:]
-
-                            for c in aux_cart:
-
-                                if c != 0:
-                                    codes_carts += ',{}'.format(c)
-                                else:
-                                    pass
-
-                            format_package = '{},{}{}'.format(
-                                truck,
-                                total_identify,
-                                codes_carts
-                            )
-
-                            self.package_log.append(format_package.split(',')[0])
-                            self.cart_log.append(total_identify)
-                            self.truck_log.append(status_truck)
-                            self.hour_log.append(self.get_format_date())
-
-                            logs = {
-
-                                'number_truck': self.package_log,
-                                'total_cart': self.cart_log,
-                                'cart_recognition': self.truck_log,
-                                'day': self.hour_log,
-                            }
-
-                            self.package_log = list()
-                            self.cart_log = list()
-                            self.truck_log = list()
-                            self.hour_log = list()
-
-                            df = pd.DataFrame(logs)
-                            with open('logs.csv', 'a') as f:
-                                df.to_csv(f, index=False, header=False)
-
-                            truck = 0
-                            plot_truck.send(format_package)
-                            carts[:] = self.create_list(size=self.limit)
-                            actions[0] = 1
-
+                            pass
                     else:
                         pass
                 else:
                     pass
-            else:
-                pass
 
-            if self.show_image is True:
-                cv2.imshow('Image', frame)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+                if self.show_image is True:
+                    cv2.imshow('Image', frame)
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
 
-            else:
-                # camera on, send status
-                pass
+                else:
+                    # camera on, send status
+                    pass
+            except Exception as e:
+                logger.error(e)
 
         camera.stop()
         cv2.destroyAllWindows()
