@@ -2,17 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d39c52f-1da7-4b73-8f3b-f96d07f89599" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/madruga.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/madruga.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/logs.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/version.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +45,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../keras-yolo3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../template_project" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -128,6 +127,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Adicionado o .gitignore" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="555" y="236" width="800" height="672" key="#Inspections" timestamp="1584106550463">
+      <screen x="0" y="236" width="1920" height="1080" />
+    </state>
+    <state x="555" y="236" width="800" height="672" key="#Inspections/1920.0.1920.1080/0.236.1920.1080@0.236.1920.1080" timestamp="1584106550463" />
     <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581358109999">
       <screen x="0" y="0" width="3840" height="1040" />
     </state>
@@ -140,10 +143,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1031" y="107" width="809" height="820" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582827416087" />
-    <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl" timestamp="1583345562944">
+    <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl" timestamp="1584707509353">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1583345562944" />
+    <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1584707509353" />
     <state x="524" y="277" key="FileChooserDialogImpl/0.0.3840.1040@0.0.3840.1040" timestamp="1581358103573" />
     <state width="1920" height="1027" key="GridCell.Tab.0.bottom" timestamp="1581368471523">
       <screen x="0" y="0" width="3840" height="1040" />
@@ -181,16 +184,16 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="122" y="54" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582124247936" />
-    <state x="105" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1584013904276">
+    <state x="105" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1584707032558">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="75" y="243" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1581546496060" />
-    <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1584013904276" />
+    <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1584707032558" />
     <state x="2025" y="360" key="com.intellij.ide.util.TipDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1581417505766" />
-    <state x="961" y="0" width="959" height="1039" key="dock-window-1" timestamp="1583852331842">
+    <state x="961" y="0" width="959" height="1039" key="dock-window-1" timestamp="1585075025524">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="961" y="0" width="959" height="1039" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1583852331842" />
+    <state x="961" y="0" width="959" height="1039" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1585075025524" />
     <state x="321" y="293" width="750" height="298" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1582124246314">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -204,28 +207,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <option name="timeStamp" value="29" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>94</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>98</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>57</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>88</line>
-          <option name="timeStamp" value="37" />
+          <url>file://$PROJECT_DIR$/recognition.py</url>
+          <line>123</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

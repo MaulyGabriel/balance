@@ -1,11 +1,11 @@
 from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress
 from loguru import logger
-import serial
 from time import sleep
+import serial
+import json
 
 
 def send_message(port, rate):
-
     device = XBeeDevice(port, rate)
 
     try:
@@ -47,7 +47,6 @@ def send_command():
 
 
 def create_digit(information):
-
     information = str(information)
     information = information.upper()
 
@@ -74,7 +73,13 @@ def create_digit(information):
     return validated_information.upper()
 
 
-if __name__ == '__main__':
-    send_message(port='/dev/ttyUSB0', rate=9600)
+def read_config(name):
 
-    print(create_digit('QROK,0013A20041A591C3'))
+    with open('./config.json') as j:
+        config = json.load(j)
+
+    print(config['config']['camera'])
+
+
+if __name__ == '__main__':
+    read_config(name='./config.json')

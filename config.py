@@ -4,55 +4,63 @@ from recognition import Recognition
 from time import time, sleep
 from loguru import logger
 import imutils
+import json
 import cv2
 
 
 class Config:
 
     def __init__(self, port, rate):
+        self.config_json = self.read_config_json()
         self.my_low_address = ''
         self.c = Communication(port, rate)
         self.pattern = 'QRCONF'
         self.config_ok = 'QROK,*2B\r\n'
         self.station = ''
         self.r = Recognition(
-            camera=0,
-            image_size=480,
-            show_image=True,
+            camera=self.config_json['camera']['usb'],
+            image_size=self.config_json['camera']['size_image'],
+            show_image=bool(self.config_json['camera']['show_image']),
             limit=0,
-            use_rasp=False,
-            pattern_code='QRCONF',
+            use_rasp=bool(self.config_json['camera']['raspberry']),
+            pattern_code=self.config_json['project']['pattern'],
             communication=self.c
         )
         self.show_image = False
 
     def read_station(self):
 
-        camera = VideoStream(usePiCamera=False, resolution=(1920, 1088), framerate=65).start()
+        try:
+            camera = VideoStream(usePiCamera=False, resolution=(
+                self.config_json['camera']['resolution']['width'], self.config_json['camera']['resolution']['height']),
+                                 framerate=self.config_json['camera']['fps']).start()
 
-        sleep(0.8)
+            sleep(0.8)
 
-        while True:
-            frame = camera.read()
-            frame = imutils.resize(frame, width=480)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            while True:
+                frame = camera.read()
+                frame = imutils.resize(frame, width=self.config_json['camera']['size_image'])
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            code = self.r.scanner(frame)
+                code = self.r.scanner(frame)
 
-            if code != '':
-                if code.split('-')[0].upper() == self.pattern.upper():
-                    if code.split('-')[1].upper():
-                        self.station = code.split('-')[1].upper()
-                        self.write_config()
+                if code != '':
+                    if code.split('-')[0].upper() == self.config_json['project']['pattern']:
+                        if code.split('-')[1].upper():
+                            self.station = code.split('-')[1].upper()
+                            self.write_config()
+                            break
+
+                if bool(self.config_json['camera']['show_image']):
+                    cv2.imshow('Config', frame)
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
 
-            if self.show_image:
-                cv2.imshow('Image', frame)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+            cv2.destroyAllWindows()
+            camera.stop()
 
-        cv2.destroyAllWindows()
-        camera.stop()
+        except Exception as e:
+            logger.error(e)
 
     def get_low_address(self):
 
@@ -119,6 +127,13 @@ class Config:
 
         return self.station
 
+    @staticmethod
+    def read_config_json():
+        with open('./config.json') as j:
+            config = json.load(j)
+
+        return config
+
     def set_configuration(self):
 
         logger.success('Start configuration...')
@@ -137,5 +152,4 @@ class Config:
 
         self.send_address(message=send_identifier)
 
-        logger.success('End configuration: {} s'.format(round(time()-init_time, 2)))
-
+        logger.success('End configuration: {} s'.format(round(time() - init_time, 2)))

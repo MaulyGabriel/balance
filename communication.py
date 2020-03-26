@@ -9,9 +9,6 @@ class Communication:
         self.port = port
         self.rate = rate
         self.wait_ok = 'QROK,*2B\r\n'
-        self.status_package = 'SEND_PACKAGE,*35\r\n'
-        self.address_balance = ''
-        self.request_address = 'QRBIN,REQUEST,*17\r\n'
 
     def data_call(self):
 
@@ -42,14 +39,7 @@ class Communication:
                         message = str(message.data.decode('utf-8'))
 
                         if self.verify_digit(message):
-
                             logger.success(message)
-
-                            if message[:] == self.status_package:
-                                actions[0] = 2
-
-                            else:
-                                pass
 
                 elif actions[0] == 1:
                     truck = plot_truck.recv()
@@ -58,6 +48,8 @@ class Communication:
                     have_package = '{},{},{}'.format('QRBE1', station, connection.get_64bit_addr())
                     have_package = self.create_digit(have_package)
                     connection.send_data_broadcast(have_package.encode('utf-8'))
+
+                    logger.info(have_package)
 
                     sleep(0.2)
 
@@ -103,48 +95,11 @@ class Communication:
 
                                     attempts_count += 1
 
-                    # actions[0] = 0
-
         except Exception as e:
             logger.error('Error in connection: {}'.format(e))
 
         finally:
             connection.close()
-
-    def send_message_device(self, connection, message):
-
-        try:
-            xbee_network = connection.get_network()
-            remote_device = xbee_network.discover_device(self.address_balance)
-
-            if remote_device is None:
-                logger.error('Not find device')
-
-            message = self.create_digit(information=message)
-
-            if self.verify_digit(information=message):
-
-                connection.send_data(remote_device, message.encode('utf-8'))
-                logger.debug('Send: {} '.format(message))
-            else:
-                logger.error('Message error')
-
-        except Exception as e:
-            logger.error(e)
-
-    def send_message(self, connection, message):
-
-        try:
-            message = self.create_digit(information=message)
-
-            if self.verify_digit(information=message):
-                connection.send_data_broadcast(message.encode('utf-8'))
-                logger.debug('Send: {} '.format(message))
-            else:
-                logger.error('Message error')
-
-        except Exception as e:
-            logger.error(e)
 
     @staticmethod
     def create_digit(information):

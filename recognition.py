@@ -71,8 +71,8 @@ class Recognition:
 
     def reader(self, carts, actions, plot_truck):
 
-        if self.use_rasp is True:
-            camera = VideoStream(usePiCamera=True, resolution=(1280, 720), framerate=65).start()
+        if self.use_rasp:
+            camera = VideoStream(usePiCamera=self.use_rasp, resolution=(1640, 1232), framerate=65).start()
         else:
             camera = VideoStream(src=self.camera).start()
 
@@ -121,7 +121,7 @@ class Recognition:
                         except IndexError:
                             pass
 
-                    elif code.split('-')[0].upper() == self.pattern_code:
+                    elif cart[0].upper() == self.pattern_code:
 
                         total_identify = self.limit - carts[:].count(0)
 
