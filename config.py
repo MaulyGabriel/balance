@@ -4,28 +4,19 @@ from recognition import Recognition
 from time import time, sleep
 from loguru import logger
 import imutils
-import json
 import cv2
 
 
 class Config:
 
-    def __init__(self, port, rate):
-        self.config_json = self.read_config_json()
+    def __init__(self, config):
+        self.config_json = config
         self.my_low_address = ''
-        self.c = Communication(port, rate)
+        self.c = Communication(config=self.config_json)
         self.pattern = 'QRCONF'
         self.config_ok = 'QROK,*2B\r\n'
         self.station = ''
-        self.r = Recognition(
-            camera=self.config_json['camera']['usb'],
-            image_size=self.config_json['camera']['size_image'],
-            show_image=bool(self.config_json['camera']['show_image']),
-            limit=0,
-            use_rasp=bool(self.config_json['camera']['raspberry']),
-            pattern_code=self.config_json['project']['pattern'],
-            communication=self.c
-        )
+        self.r = Recognition(config=self.config_json, communication=self.c)
         self.show_image = False
 
     def read_station(self):
@@ -126,13 +117,6 @@ class Config:
                     self.station = content.split(':')[1]
 
         return self.station
-
-    @staticmethod
-    def read_config_json():
-        with open('./config.json') as j:
-            config = json.load(j)
-
-        return config
 
     def set_configuration(self):
 

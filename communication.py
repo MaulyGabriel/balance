@@ -5,14 +5,12 @@ from time import sleep
 
 class Communication:
 
-    def __init__(self, port, rate):
-        self.port = port
-        self.rate = rate
-        self.wait_ok = 'QROK,*2B\r\n'
+    def __init__(self, config):
+        self.config = config
 
     def data_call(self):
 
-        device = XBeeDevice(self.port, self.rate)
+        device = XBeeDevice(self.config['serial']['port'], self.config['serial']['baudrate'])
 
         return device
 
@@ -44,7 +42,6 @@ class Communication:
                 elif actions[0] == 1:
                     truck = plot_truck.recv()
 
-                    # 1 - send have one package
                     have_package = '{},{},{}'.format('QRBE1', station, connection.get_64bit_addr())
                     have_package = self.create_digit(have_package)
                     connection.send_data_broadcast(have_package.encode('utf-8'))

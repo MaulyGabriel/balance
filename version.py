@@ -1,16 +1,21 @@
 from loguru import logger
+import json
 
 
 class Version:
 
     def __init__(self):
-        pass
+        self.config_json = self.read_config_json()
 
     @staticmethod
-    def show_version():
-        with open('version.txt', 'r') as file:
-            for content in file:
-                logger.info('{}'.format(content))
+    def read_config_json():
+        with open('./config.json') as j:
+            config = json.load(j)
+
+        return config
+
+    def show_version(self):
+        logger.info('{}'.format(self.config_json['project']))
 
 
 if __name__ == '__main__':

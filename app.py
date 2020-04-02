@@ -14,21 +14,12 @@ class App:
         self.actions = mp.Array('i', [0])
         self.receive_truck, self.send_truck = mp.Pipe()
 
-        self.c = Communication(port=self.config_json['serial']['port'], rate=self.config_json['serial']['baudrate'])
-        self.config_station = Config(port=self.config_json['serial']['port'],
-                                     rate=self.config_json['serial']['baudrate'])
+        self.c = Communication(config=self.config_json)
+        self.r = Recognition(config=self.config_json, communication=self.c)
 
-        self.station = self.config_station.read_config()
+        self.config_station = Config(config=self.config_json)
 
-        self.r = Recognition(
-            camera=self.config_json['camera']['usb'],
-            image_size=self.config_json['camera']['size_image'],
-            show_image=bool(int(self.config_json['camera']['show_image'])),
-            limit=self.config_json['carts']['total'],
-            use_rasp=bool(int(self.config_json['camera']['raspberry'])),
-            pattern_code=self.config_json['project']['pattern'],
-            communication=self.c
-        )
+        self.station = self.config_json['project']['station_id']
         self.carts = mp.Array('i', self.r.create_list(self.config_json['carts']['total']))
 
     @staticmethod

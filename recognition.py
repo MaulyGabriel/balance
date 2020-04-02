@@ -10,13 +10,8 @@ import cv2
 
 class Recognition:
 
-    def __init__(self, camera, image_size, show_image, limit, use_rasp, pattern_code, communication):
-        self.camera = camera
-        self.limit = limit
-        self.use_rasp = use_rasp
-        self.show_image = show_image
-        self.image_size = image_size
-        self.pattern_code = pattern_code
+    def __init__(self, config, communication):
+        self.config = config
         self.c = communication
         self.package_log = list()
         self.truck_log = list()
@@ -71,10 +66,14 @@ class Recognition:
 
     def reader(self, carts, actions, plot_truck):
 
-        if self.use_rasp:
-            camera = VideoStream(usePiCamera=self.use_rasp, resolution=(1640, 1232), framerate=65).start()
+        if bool(int(self.config['camera']['raspberry'])):
+            camera = VideoStream(
+                usePiCamera=bool(int(self.config['camera']['raspberry'])),
+                resolution=(
+                    self.config['camera']['resolution']['width'], self.config['camera']['resolution']['height']),
+                framerate=self.config['camera']['fps']).start()
         else:
-            camera = VideoStream(src=self.camera).start()
+            camera = VideoStream(src=self.config['camera']['usb']).start()
 
         sleep(0.8)
 
@@ -87,7 +86,7 @@ class Recognition:
             try:
 
                 frame = camera.read()
-                frame = imutils.resize(frame, self.image_size)
+                frame = imutils.resize(frame, self.config['camera']['size_image'])
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
                 code = self.scanner(frame)
@@ -99,7 +98,7 @@ class Recognition:
                     if actions[0] == 0:
 
                         # our code?
-                        if cart[0].upper() != self.pattern_code:
+                        if cart[0].upper() != self.config['project']['pattern']:
 
                             # code is truck ?
                             if cart[0].upper() == 'CAM'.upper():
@@ -116,16 +115,17 @@ class Recognition:
                                     pass
                                 else:
                                     logger.info('Add cart in package: {}'.format(cart[0]))
-                                    carts[0:self.limit - 1] = carts[1:self.limit]
-                                    carts[self.limit - 1] = int(cart[0])
+                                    carts[0:int(self.config['carts']['total']) - 1] = carts[1:int(
+                                        self.config['carts']['total'])]
+                                    carts[int(self.config['carts']['total']) - 1] = int(cart[0])
                             except ValueError:
                                 pass
                             except IndexError:
                                 pass
 
-                        elif cart[0].upper() == self.pattern_code:
+                        elif cart[0].upper() == self.config['project']['pattern']:
 
-                            total_identify = self.limit - carts[:].count(0)
+                            total_identify = int(self.config['carts']['total']) - carts[:].count(0)
 
                             if total_identify == 0:
                                 pass
@@ -171,7 +171,7 @@ class Recognition:
 
                                 truck = 0
                                 plot_truck.send(format_package)
-                                carts[:] = self.create_list(size=self.limit)
+                                carts[:] = self.create_list(size=int(self.config['carts']['total']))
                                 actions[0] = 1
 
                         else:
@@ -181,7 +181,7 @@ class Recognition:
                 else:
                     pass
 
-                if self.show_image is True:
+                if bool(int(self.config['camera']['show_image'])):
                     cv2.imshow('Image', frame)
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
