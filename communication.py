@@ -33,11 +33,13 @@ class Communication:
                     if message is None:
                         pass
                     else:
-
+                        pass
+                        '''
                         message = str(message.data.decode('utf-8'))
 
                         if self.verify_digit(message):
-                            logger.success(message)
+                            logger.info('Receive: {}'.format(message))
+                        '''
 
                 elif actions[0] == 1:
                     truck = plot_truck.recv()
@@ -46,51 +48,98 @@ class Communication:
                     have_package = self.create_digit(have_package)
                     connection.send_data_broadcast(have_package.encode('utf-8'))
 
-                    logger.info(have_package)
+                    while True:
 
-                    sleep(0.2)
+                        answer = connection.read_data()
 
-                    answer = connection.read_data()
+                        if answer is None:
+                            pass
+                        else:
+                            answer = answer.data.decode('utf-8')
 
-                    if answer is None:
-                        pass
-                    else:
-                        answer = answer.data.decode('utf-8')
+                            if answer[:6] == 'QRIPDA':
 
-                        if answer[:4] == 'QROK':
+                                if self.verify_digit(answer):
 
-                            if self.verify_digit(answer):
-
-                                remote_device = RemoteXBeeDevice(
-                                    connection,
-                                    XBee64BitAddress.from_hex_string(answer.split(',')[1])
-                                )
-
-                                while attempts_count != 0:
-
-                                    logger.info('Send package: {}'.format(attempts_count))
+                                    remote_device = RemoteXBeeDevice(
+                                        connection,
+                                        XBee64BitAddress.from_hex_string(answer.split(',')[1])
+                                    )
 
                                     final_message = 'QRBE2,{},{}'.format(attempts_count, truck)
                                     final_message = self.create_digit(final_message)
 
                                     connection.send_data(remote_device, final_message.encode('utf-8'))
 
+                                    logger.success('Send unicast: {}'.format(final_message))
+
+                                    while True:
+
+                                        answer = connection.read_data()
+
+                                        if answer is None:
+                                            pass
+                                        else:
+
+                                            answer = answer.data.decode('utf-8')
+                                            logger.success(answer)
+
+                                            if answer[:4] == 'QROK':
+                                                if self.verify_digit(answer):
+                                                    logger.success('receive ok')
+                                                    attempts_count = 0
+                                                    actions[0] = 0
+                                                    break
+                                    '''
+                                    if actions[0] == 0:
+                                        break
+            
                                     answer = connection.read_data()
 
                                     if answer is None:
                                         pass
                                     else:
                                         answer = answer.data.decode('utf-8')
-                                        sleep(0.2)
 
                                         if answer[:4] == 'QROK':
                                             if self.verify_digit(answer):
                                                 logger.success('receive ok')
-                                                attempts_count = 1
+                                                attempts_count = 0
                                                 actions[0] = 0
                                                 break
+                                    
+                                    while attempts_count != 0:
 
-                                    attempts_count += 1
+                                        final_message = 'QRBE2,{},{}'.format(attempts_count, truck)
+                                        final_message = self.create_digit(final_message)
+
+                                        connection.send_data(remote_device, final_message.encode('utf-8'))
+
+                                        logger.success('Send unicast: {}'.format(final_message))
+
+                                        answer = connection.read_data()
+
+                                        if answer is None:
+                                            pass
+                                        else:
+                                            answer = answer.data.decode('utf-8')
+
+                                            if answer[:4] == 'QROK':
+                                                if self.verify_digit(answer):
+                                                    logger.success('receive ok')
+                                                    attempts_count = 0
+                                                    actions[0] = 0
+                                                    break
+
+
+                                        attempts_count += 1
+                                                
+                                        sleep(5)
+                                        '''
+
+                        if actions[0] == 0:
+                            logger.success('Send QRB2 end terminate')
+                            break
 
         except Exception as e:
             logger.error('Error in connection: {}'.format(e))
@@ -122,17 +171,15 @@ class Communication:
         else:
             logger.error('Unable to generate validation')
 
-        validated_information = '{}*{}\r\n'.format(information, validated_information.upper())
+        validated_information = '{}{}\r\n'.format(information, validated_information.upper())
 
         return validated_information.upper()
 
     def verify_digit(self, information):
 
-        position = information.find('*')
+        result = self.create_digit(information=information.strip()[:-3])
 
-        result = self.create_digit(information[:position - 1])
-
-        if information[position + 1:] == result[position + 1:]:
+        if information.strip()[-2:] == result.strip()[-2:]:
             return True
         else:
             return False
