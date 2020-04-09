@@ -10,13 +10,13 @@ import cv2
 
 class Recognition:
 
-    def __init__(self, config, communication):
+    def __init__(self, config):
         self.config = config
-        self.c = communication
         self.package_log = list()
         self.truck_log = list()
         self.cart_log = list()
         self.hour_log = list()
+        self.b2 = ''
 
     @staticmethod
     def create_list(size):
@@ -64,7 +64,12 @@ class Recognition:
 
         return format_data
 
-    def reader(self, carts, actions, plot_truck):
+    def clear_b2(self):
+        self.b2 = ''
+
+    def reader(self, carts, actions, callback):
+
+        logger.success('Recognition start')
 
         if bool(int(self.config['camera']['raspberry'])):
             camera = VideoStream(
@@ -141,7 +146,7 @@ class Recognition:
                                     else:
                                         pass
 
-                                format_package = '{},{}{}'.format(
+                                format_package = 'QRBE2,{},{}{}'.format(
                                     truck,
                                     total_identify,
                                     codes_carts
@@ -170,9 +175,10 @@ class Recognition:
                                     df.to_csv(f, index=False, header=False)
 
                                 truck = 0
-                                plot_truck.send(format_package)
+                                self.b2 = format_package
                                 carts[:] = self.create_list(size=int(self.config['carts']['total']))
-                                actions[0] = 1
+
+                                callback()
 
                         else:
                             pass
@@ -187,7 +193,6 @@ class Recognition:
                         break
 
                 else:
-                    # camera on, send status
                     pass
             except Exception as e:
                 logger.error(e)

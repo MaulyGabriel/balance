@@ -1,29 +1,53 @@
-from communication import Communication
+from digi.xbee.devices import XBeeDevice
 from loguru import logger
-import json
+import threading
+
+global actions
+
+actions = [1]
+
+def data_call():
+    device = XBeeDevice('/dev/ttyUSB0', 115200)
+
+    return device
 
 
-class Test:
+def send_broadcast(connection, message, actions):
 
-    def __init__(self):
-        self.config = ''
+    if actions[0] == 1:
+        connection.send_data_broadcast(message.encode('utf-8'))
+        logger.success(message)
+        threading.Timer(15, send_broadcast, [connection, message, actions]).start()
+    else:
+        logger.info('SLEEP')
 
-    def read_config(self):
 
-        with open('./config.json') as j:
-            self.config = json.load(j)
+def read_data(connection, actions):
+
+    def data_receive_callback(xbee_message):
+        answer = xbee_message.data.decode('utf-8')
+
+        logger.success(answer)
+
+        connection.send_data_async(xbee_message.remote_device, 'QRBE2'.encode('utf-8'))
+        logger.success('TEST UNICAST')
+
+        actions[0] = 0
+
+    connection.add_data_received_callback(data_receive_callback)
 
 
 if __name__ == '__main__':
-    t = Test()
-    t.read_config()
 
-    c = Communication(config=t.config)
+    device = data_call()
 
-    s = 'CD'
-    s = c.create_digit(s)
+    try:
+        device.open()
 
-    c.verify_digit(information=s)
+        read_data(connection=device, actions=actions)
 
-    logger.info(s)
+        send_broadcast(connection=device, message='QRBE1', actions=actions)
 
+
+    except Exception as e:
+        logger.error(e)

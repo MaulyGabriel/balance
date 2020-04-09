@@ -2,12 +2,12 @@
   "camera": {
     "fps": 65,
     "ip": "ip_camera",
-    "raspberry": 1,
+    "raspberry": 0,
     "resolution": {
       "width": 1640,
       "height": 1232
     },
-    "show_image": 0,
+    "show_image": 1,
     "size_image": 480,
     "usb": 0
   },
@@ -31,5 +31,6 @@
   },
   "commands": {
     "receive_ok": "QROK,*2B\r\n"
+
   }
 }

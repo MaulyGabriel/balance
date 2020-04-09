@@ -1,12 +1,15 @@
-from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress
+from digi.xbee.devices import XBeeDevice
 from loguru import logger
-from time import sleep
+import threading
 
 
 class Communication:
 
-    def __init__(self, config):
+    def __init__(self, config, code_recognition):
         self.config = config
+        self.count = 0
+        self.code = code_recognition
+        self.count_send = 0
 
     def data_call(self):
 
@@ -14,138 +17,50 @@ class Communication:
 
         return device
 
-    def read_protocol(self, actions, plot_truck, station):
+    def send_broadcast(self, connection, message, actions):
 
-        connection = self.data_call()
+        if actions[0] == 1:
 
-        attempts_count = 1
+            if self.count_send == 3:
+                actions[0] = 0
+                # create cash
+            else:
+                try:
+                    connection.send_data_broadcast(message.encode('utf-8'))
+                    logger.info(message)
+                except Exception as e:
+                    logger.error('Error callback: {}'.format(e))
 
-        try:
+                logger.success(message)
+                self.count_send += 1
+                threading.Timer(30, self.send_broadcast, [connection, message, actions]).start()
+        else:
+            logger.debug('Sleep: {}'.format(self.count_send))
 
-            connection.open()
+    def read_data(self, connection, actions):
 
-            while True:
+        def data_receive_callback(xbee_message):
+            answer = xbee_message.data.decode('utf-8')
 
-                if actions[0] == 0:
+            logger.success(answer)
 
-                    message = connection.read_data()
+            if xbee_message.is_broadcast:
+                pass
+            else:
 
-                    if message is None:
-                        pass
-                    else:
-                        pass
-                        '''
-                        message = str(message.data.decode('utf-8'))
+                if answer[:6] == 'QRIPDA':
+                    if self.verify_digit(answer):
+                        connection.send_data(xbee_message.remote_device,
+                                             self.create_digit(self.code.b2).encode('utf-8'))
 
-                        if self.verify_digit(message):
-                            logger.info('Receive: {}'.format(message))
-                        '''
+                elif answer[:4] == 'QROK':
+                    if self.verify_digit(answer):
+                        logger.info('OK')
+                        actions[0] = 0
+                        self.count_send = 0
+                        self.code.clear_b2()
 
-                elif actions[0] == 1:
-                    truck = plot_truck.recv()
-
-                    have_package = '{},{},{}'.format('QRBE1', station, connection.get_64bit_addr())
-                    have_package = self.create_digit(have_package)
-                    connection.send_data_broadcast(have_package.encode('utf-8'))
-
-                    while True:
-
-                        answer = connection.read_data()
-
-                        if answer is None:
-                            pass
-                        else:
-                            answer = answer.data.decode('utf-8')
-
-                            if answer[:6] == 'QRIPDA':
-
-                                if self.verify_digit(answer):
-
-                                    remote_device = RemoteXBeeDevice(
-                                        connection,
-                                        XBee64BitAddress.from_hex_string(answer.split(',')[1])
-                                    )
-
-                                    final_message = 'QRBE2,{},{}'.format(attempts_count, truck)
-                                    final_message = self.create_digit(final_message)
-
-                                    connection.send_data(remote_device, final_message.encode('utf-8'))
-
-                                    logger.success('Send unicast: {}'.format(final_message))
-
-                                    while True:
-
-                                        answer = connection.read_data()
-
-                                        if answer is None:
-                                            pass
-                                        else:
-
-                                            answer = answer.data.decode('utf-8')
-                                            logger.success(answer)
-
-                                            if answer[:4] == 'QROK':
-                                                if self.verify_digit(answer):
-                                                    logger.success('receive ok')
-                                                    attempts_count = 0
-                                                    actions[0] = 0
-                                                    break
-                                    '''
-                                    if actions[0] == 0:
-                                        break
-            
-                                    answer = connection.read_data()
-
-                                    if answer is None:
-                                        pass
-                                    else:
-                                        answer = answer.data.decode('utf-8')
-
-                                        if answer[:4] == 'QROK':
-                                            if self.verify_digit(answer):
-                                                logger.success('receive ok')
-                                                attempts_count = 0
-                                                actions[0] = 0
-                                                break
-                                    
-                                    while attempts_count != 0:
-
-                                        final_message = 'QRBE2,{},{}'.format(attempts_count, truck)
-                                        final_message = self.create_digit(final_message)
-
-                                        connection.send_data(remote_device, final_message.encode('utf-8'))
-
-                                        logger.success('Send unicast: {}'.format(final_message))
-
-                                        answer = connection.read_data()
-
-                                        if answer is None:
-                                            pass
-                                        else:
-                                            answer = answer.data.decode('utf-8')
-
-                                            if answer[:4] == 'QROK':
-                                                if self.verify_digit(answer):
-                                                    logger.success('receive ok')
-                                                    attempts_count = 0
-                                                    actions[0] = 0
-                                                    break
-
-
-                                        attempts_count += 1
-                                                
-                                        sleep(5)
-                                        '''
-
-                        if actions[0] == 0:
-                            logger.success('Send QRB2 end terminate')
-                            break
-
-        except Exception as e:
-            logger.error('Error in connection: {}'.format(e))
-
-        finally:
-            connection.close()
+        connection.add_data_received_callback(data_receive_callback)
 
     @staticmethod
     def create_digit(information):
