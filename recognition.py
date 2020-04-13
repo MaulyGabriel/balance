@@ -67,9 +67,7 @@ class Recognition:
     def clear_b2(self):
         self.b2 = ''
 
-    def reader(self, carts, actions, callback):
-
-        logger.success('Recognition start')
+    def start_camera(self):
 
         if bool(int(self.config['camera']['raspberry'])):
             camera = VideoStream(
@@ -81,6 +79,14 @@ class Recognition:
             camera = VideoStream(src=self.config['camera']['usb']).start()
 
         sleep(0.8)
+
+        return camera
+
+    def reader(self, carts, actions, callback):
+
+        logger.info('Recognition start')
+
+        camera = self.start_camera()
 
         truck = 0
 
@@ -119,6 +125,7 @@ class Recognition:
                                 if int(cart[0]) in carts[:]:
                                     pass
                                 else:
+                                    logger.info('Truck: {}'.format(truck))
                                     logger.info('Add cart in package: {}'.format(cart[0]))
                                     carts[0:int(self.config['carts']['total']) - 1] = carts[1:int(
                                         self.config['carts']['total'])]
@@ -154,7 +161,7 @@ class Recognition:
 
                                 self.package_log.append(format_package.split(',')[0])
                                 self.cart_log.append(total_identify)
-                                self.truck_log.append(status_truck)
+                                self.truck_log.append(truck)
                                 self.hour_log.append(self.get_format_date())
 
                                 logs = {

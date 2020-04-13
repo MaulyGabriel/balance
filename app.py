@@ -6,7 +6,7 @@ import json
 
 global actions
 
-actions = [0]
+# actions = [0]
 
 
 class App:
@@ -40,7 +40,6 @@ if __name__ == '__main__':
     def send_b1():
         actions[0] = 1
         app.c.send_broadcast(connection=app.connection, message=app.QRBE1, actions=actions)
-
 
     try:
 
