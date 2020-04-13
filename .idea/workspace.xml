@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d39c52f-1da7-4b73-8f3b-f96d07f89599" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache.db" beforeDir="false" afterPath="$PROJECT_DIR$/cache.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/logs.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,11 +219,11 @@
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="290" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/49.24.1871.1056@49.24.1871.1056" timestamp="1586434195348" />
-    <state x="516" y="28" width="913" height="1063" maximized="true" key="dock-window-1" timestamp="1586700036496">
+    <state x="1007" y="24" width="913" height="1035" key="dock-window-1" timestamp="1586786795579">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="961" y="0" width="959" height="1039" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1585248389710" />
-    <state x="516" y="28" width="913" height="1063" maximized="true" key="dock-window-1/49.24.1871.1056@49.24.1871.1056" timestamp="1586700036496" />
+    <state x="1007" y="24" width="913" height="1035" key="dock-window-1/49.24.1871.1056@49.24.1871.1056" timestamp="1586786795579" />
     <state x="321" y="293" width="750" height="298" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1582124246314">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -244,19 +242,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>163</line>
+          <line>164</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/recognition.py</url>
+          <line>99</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

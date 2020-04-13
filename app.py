@@ -6,7 +6,7 @@ import json
 
 global actions
 
-# actions = [0]
+actions = [0]
 
 
 class App:
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     app = App()
 
-    def send_b1():
+    def send_qrbe1():
         actions[0] = 1
         app.c.send_broadcast(connection=app.connection, message=app.QRBE1, actions=actions)
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
         app.c.read_data(connection=app.connection, actions=actions)
 
-        app.r.reader(carts=app.carts, actions=actions, callback=send_b1)
+        app.r.reader(carts=app.carts, actions=actions, callback=send_qrbe1)
 
     except Exception as e:
         logger.error(e)

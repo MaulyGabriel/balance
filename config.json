@@ -29,9 +29,5 @@
   "wifi": {
     "name": "BE01",
     "password": "123456"
-  },
-  "commands": {
-    "receive_ok": "QROK,*2B\r\n",
-    "receive_ipda":"QRIPDA"
   }
 }

@@ -82,6 +82,13 @@ class Recognition:
 
         return camera
 
+    def process_frame(self, frame):
+
+        frame = imutils.resize(frame, self.config['camera']['size_image'])
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        return frame
+
     def reader(self, carts, actions, callback):
 
         logger.info('Recognition start')
@@ -97,8 +104,7 @@ class Recognition:
             try:
 
                 frame = camera.read()
-                frame = imutils.resize(frame, self.config['camera']['size_image'])
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                frame = self.process_frame(frame=frame)
 
                 code = self.scanner(frame)
 
@@ -108,10 +114,8 @@ class Recognition:
 
                     if actions[0] == 0:
 
-                        # our code?
                         if cart[0].upper() != self.config['project']['pattern']:
 
-                            # code is truck ?
                             if cart[0].upper() == 'CAM'.upper():
                                 truck = cart[1]
                                 status_truck = 1
@@ -120,7 +124,6 @@ class Recognition:
                                 truck = 0
                                 status_truck = 0
 
-                            # add code in  package
                             try:
                                 if int(cart[0]) in carts[:]:
                                     pass
@@ -130,10 +133,8 @@ class Recognition:
                                     carts[0:int(self.config['carts']['total']) - 1] = carts[1:int(
                                         self.config['carts']['total'])]
                                     carts[int(self.config['carts']['total']) - 1] = int(cart[0])
-                            except ValueError:
-                                pass
-                            except IndexError:
-                                pass
+                            except Exception as e:
+                                logger.error(e)
 
                         elif cart[0].upper() == self.config['project']['pattern']:
 
@@ -159,9 +160,9 @@ class Recognition:
                                     codes_carts
                                 )
 
-                                self.package_log.append(format_package.split(',')[0])
+                                self.package_log.append(truck)
                                 self.cart_log.append(total_identify)
-                                self.truck_log.append(truck)
+                                self.truck_log.append(status_truck)
                                 self.hour_log.append(self.get_format_date())
 
                                 logs = {
@@ -171,6 +172,8 @@ class Recognition:
                                     'cart_recognition': self.truck_log,
                                     'day': self.hour_log,
                                 }
+
+                                logger.debug(logs)
 
                                 self.package_log = list()
                                 self.cart_log = list()
