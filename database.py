@@ -7,8 +7,8 @@ class DataBase:
 
     def __init__(self, data_base):
         self.db = data_base
-        self.packages = {'id': list(), 'package': list()}
-        self.package = ''
+        self.packages = {'id': list(), 'package': list(), 'data': list()}
+        self.package = {'id': list(), 'package': list(), 'data': list()}
 
     def open_connection(self):
 
@@ -29,7 +29,8 @@ class DataBase:
 
         cursor = conn.cursor()
 
-        cursor.execute("CREATE TABLE package(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, package TEXT NOT NULL);")
+        cursor.execute(
+            "CREATE TABLE package(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, package TEXT NOT NULL, data NOT NULL DEFAULT CURRENT_TIMESTAMP);")
 
         logger.success('Table created')
         conn.close()
@@ -38,6 +39,8 @@ class DataBase:
 
         conn = self.open_connection()
         cursor = conn.cursor()
+
+        print(package)
 
         cursor.execute("INSERT INTO package(id, package) VALUES(NULL, '{}');".format(package))
 
@@ -53,12 +56,16 @@ class DataBase:
 
         cursor = conn.cursor()
 
-        cursor.execute("SELECT id, package FROM package;")
+        cursor.execute("SELECT id, package, data FROM package;")
 
-        for p in cursor.fetchall():
+        cache = cursor.fetchall()
 
-            self.packages['id'].append(p[0])
-            self.packages['package'].append(p[1])
+        if len(cache) > 0:
+
+            for p in cache:
+                self.packages['id'].append(p[0])
+                self.packages['package'].append(p[1])
+                self.packages['data'].append(p[2])
 
         conn.close()
 
@@ -71,9 +78,20 @@ class DataBase:
         cursor.execute("SELECT * FROM package WHERE id={}".format(id_package))
 
         for i in cursor.fetchall():
-            self.package = self.package = {'id': i[0], 'package': i[1]}
+            self.package = self.package = {'id': i[0], 'package': i[1], 'data': i[2]}
 
         conn.close()
+
+    def consult_by_package(self, package):
+
+        conn = self.open_connection()
+
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM package WHERE package LIKE '%{}%'".format(package))
+
+        for i in cursor.fetchall():
+            self.package = self.package = {'id': i[0], 'package': i[1], 'data': i[2]}
 
     def update(self, id_package, new_package):
         conn = self.open_connection()
@@ -114,3 +132,9 @@ class DataBase:
         logger.success('Backup created')
         conn.close()
 
+
+if __name__ == '__main__':
+
+    db = DataBase(data_base='cache.db')
+    db.consult()
+    print(db.packages)

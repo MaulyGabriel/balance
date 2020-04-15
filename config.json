@@ -8,7 +8,7 @@
       "height": 1232
     },
     "show_image": 1,
-    "size_image": 480,
+    "size_image": 360,
     "usb": 0
   },
   "carts": {
@@ -24,7 +24,7 @@
   "serial": {
     "port": "/dev/ttyUSB0",
     "baudrate": 115200,
-    "timeout": 30
+    "timeout": 10
   },
   "wifi": {
     "name": "BE01",

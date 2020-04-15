@@ -89,7 +89,7 @@ class Recognition:
 
         return frame
 
-    def reader(self, carts, actions, callback):
+    def reader(self, carts, callback):
 
         logger.info('Recognition start')
 
@@ -112,86 +112,80 @@ class Recognition:
 
                     cart = code.split('-')
 
-                    if actions[0] == 0:
+                    if cart[0].upper() != self.config['project']['pattern']:
 
-                        if cart[0].upper() != self.config['project']['pattern']:
+                        if cart[0].upper() == 'CAM'.upper():
+                            truck = cart[1]
+                            status_truck = 1
 
-                            if cart[0].upper() == 'CAM'.upper():
-                                truck = cart[1]
-                                status_truck = 1
+                        if truck == 0:
+                            truck = 0
+                            status_truck = 0
 
-                            if truck == 0:
-                                truck = 0
-                                status_truck = 0
-
-                            try:
-                                if int(cart[0]) in carts[:]:
-                                    pass
-                                else:
-                                    logger.info('Truck: {}'.format(truck))
-                                    logger.info('Add cart in package: {}'.format(cart[0]))
-                                    carts[0:int(self.config['carts']['total']) - 1] = carts[1:int(
-                                        self.config['carts']['total'])]
-                                    carts[int(self.config['carts']['total']) - 1] = int(cart[0])
-                            except Exception as e:
-                                logger.error(e)
-
-                        elif cart[0].upper() == self.config['project']['pattern']:
-
-                            total_identify = int(self.config['carts']['total']) - carts[:].count(0)
-
-                            if total_identify == 0:
+                        try:
+                            if int(cart[0]) in carts[:]:
                                 pass
                             else:
-                                codes_carts = ''
+                                logger.info('Truck: {}'.format(truck))
+                                logger.info('Add cart in package: {}'.format(cart[0]))
+                                carts[0:int(self.config['carts']['total']) - 1] = carts[1:int(
+                                    self.config['carts']['total'])]
+                                carts[int(self.config['carts']['total']) - 1] = int(cart[0])
+                        except Exception as e:
+                            logger.error(e)
 
-                                aux_cart = carts[:]
+                    elif cart[0].upper() == self.config['project']['pattern']:
 
-                                for c in aux_cart:
+                        total_identify = int(self.config['carts']['total']) - carts[:].count(0)
 
-                                    if c != 0:
-                                        codes_carts += ',{}'.format(c)
-                                    else:
-                                        pass
-
-                                format_package = 'QRBE2,{},{}{}'.format(
-                                    truck,
-                                    total_identify,
-                                    codes_carts
-                                )
-
-                                self.package_log.append(truck)
-                                self.cart_log.append(total_identify)
-                                self.truck_log.append(status_truck)
-                                self.hour_log.append(self.get_format_date())
-
-                                logs = {
-
-                                    'number_truck': self.package_log,
-                                    'total_cart': self.cart_log,
-                                    'cart_recognition': self.truck_log,
-                                    'day': self.hour_log,
-                                }
-
-                                logger.debug(logs)
-
-                                self.package_log = list()
-                                self.cart_log = list()
-                                self.truck_log = list()
-                                self.hour_log = list()
-
-                                df = pd.DataFrame(logs)
-                                with open('logs.csv', 'a') as f:
-                                    df.to_csv(f, index=False, header=False)
-
-                                truck = 0
-                                self.b2 = format_package
-                                carts[:] = self.create_list(size=int(self.config['carts']['total']))
-
-                                callback()
-
-                        else:
+                        if total_identify == 0:
                             pass
+                        else:
+                            codes_carts = ''
+
+                            aux_cart = carts[:]
+
+                            for c in aux_cart:
+
+                                if c != 0:
+                                    codes_carts += ',{}'.format(c)
+                                else:
+                                    pass
+
+                            format_package = 'QRBE2,{},{}{}'.format(
+                                truck,
+                                total_identify,
+                                codes_carts
+                            )
+
+                            self.package_log.append(truck)
+                            self.cart_log.append(total_identify)
+                            self.truck_log.append(status_truck)
+                            self.hour_log.append(self.get_format_date())
+
+                            logs = {
+
+                                'number_truck': self.package_log,
+                                'total_cart': self.cart_log,
+                                'cart_recognition': self.truck_log,
+                                'day': self.hour_log,
+                            }
+
+                            self.package_log = list()
+                            self.cart_log = list()
+                            self.truck_log = list()
+                            self.hour_log = list()
+
+                            df = pd.DataFrame(logs)
+                            with open('logs.csv', 'a') as f:
+                                df.to_csv(f, index=False, header=False)
+
+                            truck = 0
+                            self.b2 = format_package
+                            carts[:] = self.create_list(size=int(self.config['carts']['total']))
+
+                            callback()
+
                     else:
                         pass
                 else:

@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d39c52f-1da7-4b73-8f3b-f96d07f89599" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/package.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/timer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cache.db" beforeDir="false" afterPath="$PROJECT_DIR$/cache.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/logs.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
     </list>
@@ -44,7 +48,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../save-logs" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jetson-machines" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
@@ -165,12 +169,12 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1031" y="107" width="809" height="820" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582827416087" />
-    <state x="304" y="305" width="424" height="479" key="FileChooserDialogImpl" timestamp="1586702210346">
+    <state x="304" y="305" width="424" height="479" key="FileChooserDialogImpl" timestamp="1586787053327">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1584707509353" />
     <state x="524" y="277" key="FileChooserDialogImpl/0.0.3840.1040@0.0.3840.1040" timestamp="1581358103573" />
-    <state x="304" y="305" key="FileChooserDialogImpl/49.24.1871.1056@49.24.1871.1056" timestamp="1586702210346" />
+    <state x="304" y="305" key="FileChooserDialogImpl/49.24.1871.1056@49.24.1871.1056" timestamp="1586787053327" />
     <state width="1920" height="1027" key="GridCell.Tab.0.bottom" timestamp="1581368471523">
       <screen x="0" y="0" width="3840" height="1040" />
     </state>
@@ -232,24 +236,29 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1185" y="164" width="501" height="705" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585249042265" />
-    <state x="656" y="256" width="672" height="689" key="search.everywhere.popup" timestamp="1586436927185">
+    <state x="656" y="256" width="672" height="689" key="search.everywhere.popup" timestamp="1586976623214">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="623" y="228" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1583861439723" />
-    <state x="656" y="256" width="672" height="689" key="search.everywhere.popup/49.24.1871.1056@49.24.1871.1056" timestamp="1586436927185" />
+    <state x="656" y="256" width="672" height="689" key="search.everywhere.popup/49.24.1871.1056@49.24.1871.1056" timestamp="1586976623214" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>164</line>
-          <option name="timeStamp" value="4" />
+          <line>136</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>99</line>
-          <option name="timeStamp" value="9" />
+          <url>file://$PROJECT_DIR$/communication.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/communication.py</url>
+          <line>73</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,6 +1,7 @@
 from digi.xbee.devices import XBeeDevice
 from database import DataBase
 from loguru import logger
+from timer import TimerProcess
 import threading
 
 
@@ -10,7 +11,8 @@ class Communication:
         self.config = config
         self.code = code_recognition
         self.count_send = 0
-        self.db = DataBase(data_base='cache.db')
+        self.db = DataBase('cache.db')
+        self.timer_process = TimerProcess(self.config['serial']['timeout'])
 
     def data_call(self):
 
@@ -18,29 +20,34 @@ class Communication:
 
         return device
 
-    def send_broadcast(self, connection, message, actions):
+    def send_broadcast(self, connection, message, commands):
 
-        if actions[0] == 1:
-
-            if self.count_send == 3:
-                self.db.insert(self.code.b2)
+        if self.count_send == 3:
+            if commands[0].id == 0:
+                self.db.insert(commands[0].package)
                 logger.debug('Saved cache')
-                self.count_send = 0
-                actions[0] = 0
-            else:
-                try:
-                    connection.send_data_broadcast(message.encode('utf-8'))
-                except Exception as e:
-                    logger.error('Error callback: {}'.format(e))
+            self.count_send = 0
 
-                logger.success('Send: {}'.format(message))
-                self.count_send += 1
-                threading.Timer(self.config['serial']['timeout'], self.send_broadcast,
-                                [connection, message, actions]).start()
+            '''
+            if len(commands) > 0:
+                self.send_broadcast(connection=connection, message=message, commands=commands)
+            '''
+
         else:
+            try:
+                connection.send_data_broadcast(message.encode('utf-8'))
+            except Exception as e:
+                logger.error('Error callback: {}'.format(e))
+
+            logger.success('Send: {}'.format(message))
+
+            self.count_send += 1
+
+            self.timer_process.start_process(self.send_broadcast, [connection, message, commands])
+
             logger.debug('Sleep: {}'.format(self.count_send))
 
-    def read_data(self, connection, actions):
+    def read_data(self, connection, commands, qrbe1):
 
         def data_receive_callback(xbee_message):
             answer = xbee_message.data.decode('utf-8')
@@ -52,15 +59,30 @@ class Communication:
                 if answer[:6] == 'QRIPDA':
                     if self.verify_digit(answer):
                         logger.debug('Receive: {}'.format(answer))
+
                         connection.send_data(xbee_message.remote_device,
-                                             self.create_digit(self.code.b2).encode('utf-8'))
+                                             self.create_digit(commands[0].package).encode('utf-8'))
+
+                        logger.success('SEND: {}'.format(commands[0].package))
 
                 elif answer[:4] == 'QROK':
                     if self.verify_digit(answer):
                         logger.debug('Receive: {}'.format(answer))
-                        actions[0] = 0
+
+                        self.timer_process.stop_process()
+
+                        if commands[0].id != 0:
+                            self.db.delete(id_package=commands[0].id)
+
                         self.count_send = 0
                         self.code.clear_b2()
+
+                        logger.error('Antes: {}'.format(len(commands)))
+                        commands.pop(0)
+                        logger.error('Depois: {}'.format(len(commands)))
+
+                        if len(commands) > 0:
+                            self.send_broadcast(connection=connection, message=qrbe1, commands=commands)
 
         connection.add_data_received_callback(data_receive_callback)
 
