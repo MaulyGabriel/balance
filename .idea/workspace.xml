@@ -1,17 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:pip" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5d39c52f-1da7-4b73-8f3b-f96d07f89599" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/package.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/timer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Logs-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Logs.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cache.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache.db" beforeDir="false" afterPath="$PROJECT_DIR$/cache.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/communication.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/logs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.py" beforeDir="false" afterPath="$PROJECT_DIR$/package.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/recognition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timer.py" beforeDir="false" afterPath="$PROJECT_DIR$/timer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/version.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/version.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,13 +82,13 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../jetson-machines" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
@@ -100,18 +140,6 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -138,43 +166,48 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adicionado o .gitignore" />
     <option name="LAST_COMMIT_MESSAGE" value="Adicionado o .gitignore" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="590" y="24" width="800" height="672" key="#Inspections" timestamp="1586285068066">
+    <state x="590" y="24" width="800" height="672" key="#Inspections" timestamp="1587055036739">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="555" y="236" width="800" height="672" key="#Inspections/1920.0.1920.1080/0.236.1920.1080@0.236.1920.1080" timestamp="1584106550463" />
-    <state x="590" y="24" key="#Inspections/49.24.1871.1056@49.24.1871.1056" timestamp="1586285068066" />
+    <state x="590" y="24" key="#Inspections/49.24.1871.1056@49.24.1871.1056" timestamp="1587055036739" />
     <state x="849" y="204" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586439046582">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="2338" y="177" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3840.1040@0.0.3840.1040" timestamp="1581358109999" />
     <state x="849" y="204" key="#com.intellij.execution.impl.EditConfigurationsDialog/49.24.1871.1056@49.24.1871.1056" timestamp="1586439046582" />
-    <state x="212" y="269" width="524" height="496" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1583261320344">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="216" y="360" width="591" height="396" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588790224935">
+      <screen x="43" y="27" width="1877" height="1053" />
+    </state>
+    <state x="216" y="360" width="591" height="396" key="#com.intellij.fileTypes.FileTypeChooser/43.27.1877.1053@43.27.1877.1053" timestamp="1588790224935" />
+    <state x="221" y="358" key="#com.intellij.fileTypes.FileTypeChooser/49.24.1871.1056@49.24.1871.1056" timestamp="1587053611071" />
+    <state x="256" y="297" width="524" height="496" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587053905628">
+      <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="212" y="269" width="524" height="496" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1583261320344" />
+    <state x="256" y="297" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/49.24.1871.1056@49.24.1871.1056" timestamp="1587053905628" />
     <state x="1031" y="107" width="809" height="820" key="CommitChangelistDialog2" timestamp="1582827416087">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1031" y="107" width="809" height="820" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1582827416087" />
-    <state x="304" y="305" width="424" height="479" key="FileChooserDialogImpl" timestamp="1586787053327">
+    <state x="304" y="305" width="424" height="479" key="FileChooserDialogImpl" timestamp="1587063372688">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="262" y="277" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1584707509353" />
     <state x="524" y="277" key="FileChooserDialogImpl/0.0.3840.1040@0.0.3840.1040" timestamp="1581358103573" />
-    <state x="304" y="305" key="FileChooserDialogImpl/49.24.1871.1056@49.24.1871.1056" timestamp="1586787053327" />
+    <state x="304" y="305" key="FileChooserDialogImpl/49.24.1871.1056@49.24.1871.1056" timestamp="1587063372688" />
     <state width="1920" height="1027" key="GridCell.Tab.0.bottom" timestamp="1581368471523">
       <screen x="0" y="0" width="3840" height="1040" />
     </state>
@@ -212,22 +245,23 @@
     </state>
     <state x="122" y="54" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1582124247936" />
     <state x="168" y="79" key="SettingsEditor/49.24.1871.1056@49.24.1871.1056" timestamp="1586268663342" />
-    <state x="151" y="376" key="com.intellij.ide.util.TipDialog" timestamp="1586454278512">
+    <state x="151" y="376" key="com.intellij.ide.util.TipDialog" timestamp="1587037069015">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="75" y="243" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1581546496060" />
     <state x="105" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1585934224606" />
     <state x="2025" y="360" key="com.intellij.ide.util.TipDialog/1920.0.1920.1080/0.0.1920.1040@1920.0.1920.1080" timestamp="1581417505766" />
-    <state x="151" y="376" key="com.intellij.ide.util.TipDialog/49.24.1871.1056@49.24.1871.1056" timestamp="1586454278512" />
+    <state x="151" y="376" key="com.intellij.ide.util.TipDialog/49.24.1871.1056/1920.0.1920.1080@49.24.1871.1056" timestamp="1587036596291" />
+    <state x="151" y="376" key="com.intellij.ide.util.TipDialog/49.24.1871.1056@49.24.1871.1056" timestamp="1587037069015" />
     <state x="290" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1586434195348">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="290" y="473" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/49.24.1871.1056@49.24.1871.1056" timestamp="1586434195348" />
-    <state x="1007" y="24" width="913" height="1035" key="dock-window-1" timestamp="1586786795579">
+    <state x="1007" y="24" width="913" height="1035" key="dock-window-1" timestamp="1587062147695">
       <screen x="49" y="24" width="1871" height="1056" />
     </state>
     <state x="961" y="0" width="959" height="1039" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1585248389710" />
-    <state x="1007" y="24" width="913" height="1035" key="dock-window-1/49.24.1871.1056@49.24.1871.1056" timestamp="1586786795579" />
+    <state x="1007" y="24" width="913" height="1035" key="dock-window-1/49.24.1871.1056@49.24.1871.1056" timestamp="1587062147695" />
     <state x="321" y="293" width="750" height="298" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1582124246314">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -241,26 +275,9 @@
     </state>
     <state x="623" y="228" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1583861439723" />
     <state x="656" y="256" width="672" height="689" key="search.everywhere.popup/49.24.1871.1056@49.24.1871.1056" timestamp="1586976623214" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recognition.py</url>
-          <line>136</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>25</line>
-          <option name="timeStamp" value="29" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/communication.py</url>
-          <line>73</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="247" y="467" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1587044672681">
+      <screen x="49" y="24" width="1871" height="1056" />
+    </state>
+    <state x="247" y="467" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/49.24.1871.1056@49.24.1871.1056" timestamp="1587044672681" />
   </component>
 </project>

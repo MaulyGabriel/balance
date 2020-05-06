@@ -1,5 +1,9 @@
 class Package:
 
-    def __init__(self, id=0, package=''):
-        self.id = id
+    def __init__(self, id_package=0, package=''):
+        """
+
+        :type package: string
+        """
+        self.id = id_package
         self.package = package

@@ -1,53 +1,49 @@
 from digi.xbee.devices import XBeeDevice
-from database import DataBase
 from loguru import logger
-from timer import TimerProcess
-import threading
+from time import sleep
 
 
 class Communication:
 
-    def __init__(self, config, code_recognition):
+    def __init__(self, config, code_recognition, timer_process, db):
         self.config = config
         self.code = code_recognition
         self.count_send = 0
-        self.db = DataBase('cache.db')
-        self.timer_process = TimerProcess(self.config['serial']['timeout'])
+        self.db = db
+        self.timer_process = timer_process
 
     def data_call(self):
 
-        device = XBeeDevice(self.config['serial']['port'], self.config['serial']['baudrate'])
+        device = XBeeDevice(self.config.port, self.config.baudrate)
 
         return device
+
+    def control_process(self, connection, message, commands):
+
+        while self.timer_process.interruption or len(commands) > 0:
+            self.send_broadcast(connection, message, commands)
+            sleep(self.config.timeout)
 
     def send_broadcast(self, connection, message, commands):
 
         if self.count_send == 3:
-            if commands[0].id == 0:
-                self.db.insert(commands[0].package)
-                logger.debug('Saved cache')
-            self.count_send = 0
-
-            '''
             if len(commands) > 0:
-                self.send_broadcast(connection=connection, message=message, commands=commands)
-            '''
-
+                if commands[0].id == 0:
+                    if not commands[0].package == '':
+                        self.db.insert(commands[0].package)
+                    self.timer_process.stop_process()
+                self.count_send = 0
+                commands.pop(0)
         else:
             try:
                 connection.send_data_broadcast(message.encode('utf-8'))
+                logger.debug('SEND: {}'.format(message))
             except Exception as e:
                 logger.error('Error callback: {}'.format(e))
 
-            logger.success('Send: {}'.format(message))
-
             self.count_send += 1
 
-            self.timer_process.start_process(self.send_broadcast, [connection, message, commands])
-
-            logger.debug('Sleep: {}'.format(self.count_send))
-
-    def read_data(self, connection, commands, qrbe1):
+    def read_data(self, connection, commands):
 
         def data_receive_callback(xbee_message):
             answer = xbee_message.data.decode('utf-8')
@@ -58,18 +54,17 @@ class Communication:
 
                 if answer[:6] == 'QRIPDA':
                     if self.verify_digit(answer):
-                        logger.debug('Receive: {}'.format(answer))
+                        if len(commands) > 0:
+                            connection.send_data(xbee_message.remote_device,
+                                                 self.create_digit(commands[0].package).encode('utf-8'))
 
-                        connection.send_data(xbee_message.remote_device,
-                                             self.create_digit(commands[0].package).encode('utf-8'))
-
-                        logger.success('SEND: {}'.format(commands[0].package))
+                            logger.success('RECEIVE: {}'.format(answer))
 
                 elif answer[:4] == 'QROK':
                     if self.verify_digit(answer):
-                        logger.debug('Receive: {}'.format(answer))
-
                         self.timer_process.stop_process()
+
+                        logger.success('RECEIVE: {}'.format(answer))
 
                         if commands[0].id != 0:
                             self.db.delete(id_package=commands[0].id)
@@ -77,12 +72,7 @@ class Communication:
                         self.count_send = 0
                         self.code.clear_b2()
 
-                        logger.error('Antes: {}'.format(len(commands)))
                         commands.pop(0)
-                        logger.error('Depois: {}'.format(len(commands)))
-
-                        if len(commands) > 0:
-                            self.send_broadcast(connection=connection, message=qrbe1, commands=commands)
 
         connection.add_data_received_callback(data_receive_callback)
 

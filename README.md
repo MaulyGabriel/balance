@@ -8,7 +8,7 @@ Identificador de caminhões e carretas na entrada da balança.
 O projeto foi desenvolvido na linguagem python com sua versão 3.6.
 
 
-### Dependências do projeto:
+### Dependências externas do projeto:
 
     . opencv-python
     . imutils
@@ -16,11 +16,15 @@ O projeto foi desenvolvido na linguagem python com sua versão 3.6.
     . loguru
     . digi-xbee 
     . pyserial
-    . multiprocessing
     . numpy
-    . time
+ 
  
  
  Para instalar as dependências, rode:
     
-    pip install requirements.txt
+    pip install -r requirements.txt
+ 
+ 
+ Ou utilize a linha abaixo:
+ 
+    pip install opencv-python imutils pyzbar loguru digi-xbee pyserial numpy

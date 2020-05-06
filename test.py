@@ -1,14 +1,12 @@
+import controller
 from database import DataBase
-from loguru import logger
-import pandas as pd
 
+db = DataBase(data_base='/home/madruga/developer/projects/config/config.db')
 
-def show_data():
-    db = DataBase('cache.db')
-    db.consult()
-    df = pd.DataFrame(db.packages, columns=['id', 'package'])
-    logger.success(df)
+camera = controller.consult_camera(db)
 
+communication = controller.consult_communication(db)
 
-if __name__ == '__main__':
-    show_data()
+print(camera)
+
+print(communication)

@@ -2,6 +2,7 @@ from imutils.video import VideoStream
 from time import localtime, sleep
 from loguru import logger
 from pyzbar import pyzbar
+import threading
 import pandas as pd
 import numpy as np
 import imutils
@@ -10,13 +11,16 @@ import cv2
 
 class Recognition:
 
-    def __init__(self, config):
+    def __init__(self, config, db):
         self.config = config
         self.package_log = list()
         self.truck_log = list()
         self.cart_log = list()
         self.hour_log = list()
         self.b2 = ''
+        self.db = db
+        self.timer = None
+        self.total_cart = 12
 
     @staticmethod
     def create_list(size):
@@ -69,14 +73,10 @@ class Recognition:
 
     def start_camera(self):
 
-        if bool(int(self.config['camera']['raspberry'])):
-            camera = VideoStream(
-                usePiCamera=bool(int(self.config['camera']['raspberry'])),
-                resolution=(
-                    self.config['camera']['resolution']['width'], self.config['camera']['resolution']['height']),
-                framerate=self.config['camera']['fps']).start()
-        else:
-            camera = VideoStream(src=self.config['camera']['usb']).start()
+        camera = VideoStream(
+            usePiCamera=True,
+            resolution=(self.config.width, self.config.height),
+            framerate=self.config.fps).start()
 
         sleep(0.8)
 
@@ -84,14 +84,48 @@ class Recognition:
 
     def process_frame(self, frame):
 
-        frame = imutils.resize(frame, self.config['camera']['size_image'])
+        frame = imutils.resize(frame, self.config.resize_image)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         return frame
 
-    def reader(self, carts, callback):
+    def check_cache(self):
+        packages = self.db.consult()
+        return len(packages['id']) > 0
 
-        logger.info('Recognition start')
+    def send_cache(self, callback, commands):
+
+        have_cache = self.check_cache()
+        have_commands = len(commands) == 0
+
+        if have_cache and have_commands:
+            callback()
+
+        self.timer.cancel()
+        self.timer = None
+
+    def save_logs(self):
+
+        logs = {
+
+            'number_truck': self.package_log,
+            'total_cart': self.cart_log,
+            'cart_recognition': self.truck_log,
+            'day': self.hour_log,
+        }
+
+        self.package_log = list()
+        self.cart_log = list()
+        self.truck_log = list()
+        self.hour_log = list()
+
+        df = pd.DataFrame(logs)
+        with open('logs.csv', 'a') as f:
+            df.to_csv(f, index=False, header=False)
+
+        logger.success('Logs saved.')
+
+    def reader(self, carts, callback, commands):
 
         camera = self.start_camera()
 
@@ -112,9 +146,9 @@ class Recognition:
 
                     cart = code.split('-')
 
-                    if cart[0].upper() != self.config['project']['pattern']:
+                    if cart[0].upper() != "QRCODE0":
 
-                        if cart[0].upper() == 'CAM'.upper():
+                        if cart[0].upper() == "CAM".upper():
                             truck = cart[1]
                             status_truck = 1
 
@@ -123,20 +157,21 @@ class Recognition:
                             status_truck = 0
 
                         try:
-                            if int(cart[0]) in carts[:]:
+
+                            new_code = cart[0]
+
+                            if int(new_code) in carts[:]:
                                 pass
                             else:
-                                logger.info('Truck: {}'.format(truck))
-                                logger.info('Add cart in package: {}'.format(cart[0]))
-                                carts[0:int(self.config['carts']['total']) - 1] = carts[1:int(
-                                    self.config['carts']['total'])]
-                                carts[int(self.config['carts']['total']) - 1] = int(cart[0])
+                                logger.info('Truck: {}, Code: {}'.format(truck, new_code))
+                                carts[0:self.total_cart - 1] = carts[1:self.total_cart]
+                                carts[self.total_cart - 1] = int(cart[0])
                         except Exception as e:
                             logger.error(e)
 
-                    elif cart[0].upper() == self.config['project']['pattern']:
+                    elif cart[0].upper() == "QRCODE0":
 
-                        total_identify = int(self.config['carts']['total']) - carts[:].count(0)
+                        total_identify = self.total_cart - carts[:].count(0)
 
                         if total_identify == 0:
                             pass
@@ -163,26 +198,11 @@ class Recognition:
                             self.truck_log.append(status_truck)
                             self.hour_log.append(self.get_format_date())
 
-                            logs = {
-
-                                'number_truck': self.package_log,
-                                'total_cart': self.cart_log,
-                                'cart_recognition': self.truck_log,
-                                'day': self.hour_log,
-                            }
-
-                            self.package_log = list()
-                            self.cart_log = list()
-                            self.truck_log = list()
-                            self.hour_log = list()
-
-                            df = pd.DataFrame(logs)
-                            with open('logs.csv', 'a') as f:
-                                df.to_csv(f, index=False, header=False)
+                            self.save_logs()
 
                             truck = 0
                             self.b2 = format_package
-                            carts[:] = self.create_list(size=int(self.config['carts']['total']))
+                            carts[:] = self.create_list(size=self.total_cart)
 
                             callback()
 
@@ -191,8 +211,13 @@ class Recognition:
                 else:
                     pass
 
-                if bool(int(self.config['camera']['show_image'])):
-                    cv2.imshow('Image', frame)
+                    if self.timer is None:
+                        logger.info('INIT TIMER CACHE')
+                        self.timer = threading.Timer(120, self.send_cache, [callback, commands])
+                        self.timer.start()
+
+                if bool(int(self.config.show_image)):
+                    cv2.imshow('Solinftec', frame)
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
 

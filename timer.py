@@ -3,21 +3,22 @@ import threading
 
 class TimerProcess:
 
-    def __init__(self, limit):
+    def __init__(self):
         self.process = None
-        self.limit = limit
-        self.interruption = False
+        self.limit = 0
+        self.interruption = True
 
     def start_process(self, callback, args):
-        if self.process is None and self.interruption is False:
+        if self.process is None:
             self.process = threading.Timer(self.limit, callback, args)
             self.process.start()
-        else:
-            self.interruption = False
+            self.interruption = True
 
     def stop_process(self):
-
         if self.process is not None:
             self.process.cancel()
             self.process = None
-            self.interruption = True
+            self.interruption = False
+
+    def restart(self):
+        self.interruption = True

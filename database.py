@@ -7,8 +7,6 @@ class DataBase:
 
     def __init__(self, data_base):
         self.db = data_base
-        self.packages = {'id': list(), 'package': list(), 'data': list()}
-        self.package = {'id': list(), 'package': list(), 'data': list()}
 
     def open_connection(self):
 
@@ -40,8 +38,6 @@ class DataBase:
         conn = self.open_connection()
         cursor = conn.cursor()
 
-        print(package)
-
         cursor.execute("INSERT INTO package(id, package) VALUES(NULL, '{}');".format(package))
 
         conn.commit()
@@ -51,6 +47,8 @@ class DataBase:
         conn.close()
 
     def consult(self):
+
+        packages = {'id': list(), 'package': list(), 'data': list()}
 
         conn = self.open_connection()
 
@@ -63,43 +61,13 @@ class DataBase:
         if len(cache) > 0:
 
             for p in cache:
-                self.packages['id'].append(p[0])
-                self.packages['package'].append(p[1])
-                self.packages['data'].append(p[2])
+                packages['id'].append(p[0])
+                packages['package'].append(p[1])
+                packages['data'].append(p[2])
 
         conn.close()
 
-    def consult_by_id(self, id_package):
-
-        conn = self.open_connection()
-
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT * FROM package WHERE id={}".format(id_package))
-
-        for i in cursor.fetchall():
-            self.package = self.package = {'id': i[0], 'package': i[1], 'data': i[2]}
-
-        conn.close()
-
-    def consult_by_package(self, package):
-
-        conn = self.open_connection()
-
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT * FROM package WHERE package LIKE '%{}%'".format(package))
-
-        for i in cursor.fetchall():
-            self.package = self.package = {'id': i[0], 'package': i[1], 'data': i[2]}
-
-    def update(self, id_package, new_package):
-        conn = self.open_connection()
-        cursor = conn.cursor()
-        cursor.execute("UPDATE package SET package='{}' WHERE id={}".format(new_package, id_package))
-        conn.commit()
-        logger.success('Data updated')
-        conn.close()
+        return packages
 
     def delete(self, id_package):
         conn = self.open_connection()
@@ -109,17 +77,26 @@ class DataBase:
         logger.success('Data deleted')
         conn.close()
 
-    def show_information(self, name_table):
+    def consult_data(self, sql):
 
-        conn = self.open_connection()
-        cursor = conn.cursor()
+        try:
+            conn = self.open_connection()
 
-        cursor.execute("PRAGMA table_info({})".format(name_table))
-        columns = [c[1] for c in cursor.fetchall()]
+            cursor = conn.cursor()
 
-        logger.info('Columns: {}'.format(columns))
+            cursor.execute(sql)
 
-        conn.close()
+            cache = cursor.fetchall()
+
+            conn.close()
+
+            if len(cache) > 0:
+                return cache
+
+            return None
+
+        except Exception as e:
+            logger.error('Consult: {}'.format(e))
 
     def backup(self, name):
 
@@ -131,10 +108,3 @@ class DataBase:
 
         logger.success('Backup created')
         conn.close()
-
-
-if __name__ == '__main__':
-
-    db = DataBase(data_base='cache.db')
-    db.consult()
-    print(db.packages)

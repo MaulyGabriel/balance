@@ -1,10 +1,12 @@
+from digi.xbee.util import utils
 from communication import Communication
 from recognition import Recognition
+from timer import TimerProcess
 from database import DataBase
 from package import Package
 from loguru import logger
 import multiprocessing as mp
-import json
+import controller
 import os
 
 global commands
@@ -15,29 +17,32 @@ commands = list()
 class App:
 
     def __init__(self):
-        self.config_json = self.read_config()
+        self.db = DataBase(data_base='cache.db')
+        self.camera, self.communication = self.read_config()
+        self.timer_process = TimerProcess()
 
-        self.r = Recognition(config=self.config_json)
-        self.c = Communication(config=self.config_json, code_recognition=self.r)
+        self.r = Recognition(config=self.camera, db=self.db)
+        self.c = Communication(config=self.communication, code_recognition=self.r, timer_process=self.timer_process,
+                               db=self.db)
 
-        self.station = self.config_json['project']['station_id']
-        self.carts = mp.Array('i', self.r.create_list(self.config_json['carts']['total']))
+        self.station = self.camera.station_id
+        self.carts = mp.Array('i', self.r.create_list(12))
 
         self.connection = self.c.data_call()
 
         self.QRBE1 = self.c.create_digit('QRBE1,{}'.format(self.station))
 
-        self.db = DataBase(data_base='cache.db')
-
     @staticmethod
     def read_config():
-        with open('./config.json') as j:
-            config = json.load(j)
+        db = DataBase(data_base='/home/madruga/developer/projects/config/config.db')
 
-        return config
+        camera = controller.consult_camera(db)
+
+        communication = controller.consult_communication(db)
+
+        return camera, communication
 
     def check_database(self):
-
         db = os.path.exists('./cache.db')
 
         if not db:
@@ -53,9 +58,12 @@ if __name__ == '__main__':
 
 
     def check_cache():
-        app.db.consult()
 
-        return len(app.db.packages) > 0
+        packages = app.db.consult()
+
+        logger.error(packages)
+
+        return packages, len(packages['id']) > 0
 
 
     def check_package(package):
@@ -67,35 +75,43 @@ if __name__ == '__main__':
 
         return False
 
+
     def callback_package():
-
-        logger.debug('CALLBACK')
-
         send_command = len(commands) == 0
 
-        app.db.consult()
+        packages, have_cache = check_cache()
 
-        if check_cache():
+        if have_cache:
 
-            for i, p in zip(app.db.packages['id'], app.db.packages['package']):
+            for i, p in zip(packages['id'], packages['package']):
 
                 if not check_package(package=p):
-                    logger.debug('HAVE CACHE')
-                    commands.append(Package(id=i, package=p))
+                    commands.append(Package(id_package=i, package=p))
 
         if not check_package(package=app.r.b2):
-            commands.append(Package(id=0, package=app.r.b2))
+            commands.append(Package(id_package=0, package=app.r.b2))
 
         if send_command:
-            app.c.send_broadcast(connection=app.connection, message=app.QRBE1, commands=commands)
+            app.timer_process.start_process(app.c.control_process, [app.connection, app.QRBE1, commands])
+
+
+    def apply_configuration():
+
+        try:
+            app.connection.set_parameter("HP", utils.hex_string_to_bytes(app.communication.preamble))
+        except Exception as e:
+            logger.error(e)
+
 
     try:
 
         app.connection.open()
 
-        app.c.read_data(connection=app.connection, commands=commands, qrbe1=app.QRBE1)
+        apply_configuration()
 
-        app.r.reader(carts=app.carts, callback=callback_package)
+        app.c.read_data(connection=app.connection, commands=commands)
+
+        app.r.reader(carts=app.carts, callback=callback_package, commands=commands)
 
     except Exception as e:
         logger.error(e)
