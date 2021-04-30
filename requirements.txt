@@ -166,7 +166,7 @@ tta-wrapper==0.0.1
 twine==3.1.1
 typing-extensions==3.7.4.1
 uritemplate==3.0.1
-urllib3==1.25.7
+urllib3==1.25.8
 vidgear==0.1.5
 vidstab==1.7.2
 wcwidth==0.1.7
