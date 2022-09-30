@@ -53,7 +53,7 @@ itsdangerous==1.1.0
 jedi==0.15.1
 jeepney==0.4.1
 Jinja2==2.10.3
-joblib==0.14.0
+joblib==1.2.0
 jsmin==2.2.2
 jsonschema==3.2.0
 jupyter==1.0.0
